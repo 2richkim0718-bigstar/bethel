@@ -51,41 +51,41 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
-      <div className="w-full max-w-md">
+    <div className="bg-gradient-to-br from-slate-50 to-slate-100" style={{minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "1rem", paddingRight: "1rem"}}>
+      <div className="max-w-md" style={{width: "100%"}}>
         {/* 카드 */}
         <div className="card-elegant">
           {/* 로고 */}
-          <div className="mb-8 text-center">
-            <div className="mb-4 inline-block rounded-lg bg-accent/10 p-3">
+          <div className="mb-8" style={{textAlign: "center"}}>
+            <div className="inline-block bg-accent/10" style={{marginBottom: "1rem", borderRadius: "0.5rem", padding: "0.75rem"}}>
               <UserPlus className="h-6 w-6 text-accent" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">ChurchLink</h1>
-            <p className="mt-2 text-sm text-slate-600">회원가입</p>
+            <h1 style={{fontSize: "1.5rem", fontWeight: 700, color: "#0f172a"}}>ChurchLink</h1>
+            <p style={{marginTop: "0.5rem", fontSize: "0.875rem", color: "#475569"}}>회원가입</p>
           </div>
 
           {/* Step 1: 역할 선택 */}
           {step === "role" && (
             <div className="space-y-4">
-              <p className="text-center text-sm font-medium text-slate-900">
+              <p style={{textAlign: "center", fontSize: "0.875rem", fontWeight: 500, color: "#0f172a"}}>
                 당신의 역할을 선택해주세요
               </p>
-              <div className="grid gap-3">
+              <div className="grid" style={{gap: "0.75rem"}}>
                 <button
                   onClick={() => handleRoleSelect("pastor")}
-                  className="card-elegant border-2 border-transparent transition-all hover:border-accent"
+                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
                 >
-                  <h3 className="font-semibold text-slate-900">목사님</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 style={{fontWeight: 600, color: "#0f172a"}}>목사님</h3>
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
                     협조요청을 승인하고 관리합니다
                   </p>
                 </button>
                 <button
                   onClick={() => handleRoleSelect("member")}
-                  className="card-elegant border-2 border-transparent transition-all hover:border-accent"
+                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
                 >
-                  <h3 className="font-semibold text-slate-900">성도</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 style={{fontWeight: 600, color: "#0f172a"}}>성도</h3>
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
                     장소와 물품 대여를 신청합니다
                   </p>
                 </button>
@@ -97,7 +97,7 @@ export default function Signup() {
           {step === "info" && role && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name" className="text-sm font-medium">
+                <Label htmlFor="name" style={{fontSize: "0.875rem", fontWeight: 500}}>
                   이름
                 </Label>
                 <Input
@@ -111,7 +111,7 @@ export default function Signup() {
               </div>
 
               <div>
-                <Label htmlFor="age" className="text-sm font-medium">
+                <Label htmlFor="age" style={{fontSize: "0.875rem", fontWeight: 500}}>
                   나이
                 </Label>
                 <Input
@@ -126,7 +126,7 @@ export default function Signup() {
               </div>
 
               <div>
-                <Label htmlFor="department" className="text-sm font-medium">
+                <Label htmlFor="department" style={{fontSize: "0.875rem", fontWeight: 500}}>
                   소속 부서
                 </Label>
                 <Select value={formData.department} onValueChange={handleDepartmentChange}>
@@ -143,7 +143,7 @@ export default function Signup() {
                 </Select>
               </div>
 
-              <div className="flex gap-3 pt-4">
+              <div className="pt-4" style={{display: "flex", gap: "0.75rem"}}>
                 <Button
                   variant="outline"
                   className="flex-1"
@@ -160,18 +160,18 @@ export default function Signup() {
 
           {/* Step 3: 완료 */}
           {step === "complete" && (
-            <div className="text-center">
-              <div className="mb-4 inline-block rounded-lg bg-green-100 p-3">
+            <div style={{textAlign: "center"}}>
+              <div className="inline-block bg-green-100" style={{marginBottom: "1rem", borderRadius: "0.5rem", padding: "0.75rem"}}>
                 <ArrowRight className="h-6 w-6 text-green-600" />
               </div>
-              <h2 className="mb-2 text-lg font-semibold text-slate-900">
+              <h2 style={{marginBottom: "0.5rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>
                 가입이 완료되었습니다!
               </h2>
-              <p className="mb-6 text-sm text-slate-600">
+              <p style={{marginBottom: "1.5rem", fontSize: "0.875rem", color: "#475569"}}>
                 이제 로그인하여 서비스를 시작할 수 있습니다.
               </p>
               <a href={getLoginUrl()}>
-                <Button className="w-full">로그인하기</Button>
+                <Button style={{width: "100%"}}>로그인하기</Button>
               </a>
             </div>
           )}
@@ -179,10 +179,10 @@ export default function Signup() {
 
         {/* 하단 링크 */}
         {step === "role" && (
-          <p className="mt-6 text-center text-sm text-slate-600">
+          <p style={{marginTop: "1.5rem", textAlign: "center", fontSize: "0.875rem", color: "#475569"}}>
             이미 계정이 있으신가요?{" "}
             <Link href="/login">
-              <a className="font-medium text-accent hover:underline">로그인</a>
+              <a className="text-accent hover:underline" style={{fontWeight: 500}}>로그인</a>
             </Link>
           </p>
         )}

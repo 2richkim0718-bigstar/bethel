@@ -47,7 +47,7 @@ export default function RequestDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div style={{minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f8fafc"}}>
         <Loader2 className="h-8 w-8 animate-spin text-accent" />
       </div>
     );
@@ -55,48 +55,48 @@ export default function RequestDetail() {
 
   if (!request) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <nav className="border-b border-slate-200 bg-white shadow-sm">
-          <div className="container flex items-center gap-4 py-4">
-            <button onClick={() => setLocation("/dashboard")} className="text-slate-600 hover:text-slate-900">
+      <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
+        <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
+          <div className="container" style={{display: "flex", alignItems: "center", gap: "1rem", paddingTop: "1rem", paddingBottom: "1rem"}}>
+            <button onClick={() => setLocation("/dashboard")} className="hover:text-slate-900" style={{color: "#475569"}}>
               <ArrowLeft className="h-5 w-5" />
             </button>
-            <div className="text-2xl font-bold text-accent">ChurchLink</div>
+            <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
           </div>
         </nav>
-        <div className="container py-12 text-center">
-          <p className="text-slate-600">요청을 찾을 수 없습니다.</p>
+        <div className="container py-12" style={{textAlign: "center"}}>
+          <p style={{color: "#475569"}}>요청을 찾을 수 없습니다.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
       {/* 네비게이션 */}
-      <nav className="border-b border-slate-200 bg-white shadow-sm">
-        <div className="container flex items-center gap-4 py-4">
-          <button onClick={() => setLocation("/dashboard")} className="text-slate-600 hover:text-slate-900">
+      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
+        <div className="container" style={{display: "flex", alignItems: "center", gap: "1rem", paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <button onClick={() => setLocation("/dashboard")} className="hover:text-slate-900" style={{color: "#475569"}}>
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <div className="text-2xl font-bold text-accent">ChurchLink</div>
+          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
         </div>
       </nav>
 
       {/* 메인 콘텐츠 */}
-      <div className="container py-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
+        <div className="max-w-2xl" style={{marginLeft: "auto", marginRight: "auto"}}>
           {/* 상태 헤더 */}
-          <div className="card-elegant mb-6 flex items-center gap-4">
+          <div className="card-elegant" style={{marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "1rem"}}>
             <div className="flex-shrink-0">
               {getStatusIcon(request.status)}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">
+              <h1 style={{fontSize: "1.5rem", fontWeight: 700, color: "#0f172a"}}>
                 {request.type === "space" ? "장소 대여" : "물품 대여"} 요청
               </h1>
-              <p className="text-sm text-slate-600">
-                상태: <span className="font-semibold">{getStatusText(request.status)}</span>
+              <p style={{fontSize: "0.875rem", color: "#475569"}}>
+                상태: <span style={{fontWeight: 600}}>{getStatusText(request.status)}</span>
               </p>
             </div>
           </div>
@@ -105,28 +105,28 @@ export default function RequestDetail() {
           <div className="card-elegant space-y-6">
             {/* 기본 정보 */}
             <div>
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">기본 정보</h2>
-              <div className="grid gap-4 md:grid-cols-2">
+              <h2 style={{marginBottom: "1rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>기본 정보</h2>
+              <div className="grid md:grid-cols-2" style={{gap: "1rem"}}>
                 <div>
-                  <p className="text-sm text-slate-600">요청 날짜</p>
-                  <p className="font-medium text-slate-900">{request.requestDate}</p>
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 날짜</p>
+                  <p style={{fontWeight: 500, color: "#0f172a"}}>{request.requestDate}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-600">요청 시간</p>
-                  <p className="font-medium text-slate-900">
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 시간</p>
+                  <p style={{fontWeight: 500, color: "#0f172a"}}>
                     {request.startTime} ~ {request.endTime}
                   </p>
                 </div>
                 {request.attendeeCount && (
                   <div>
-                    <p className="text-sm text-slate-600">참석 인원</p>
-                    <p className="font-medium text-slate-900">{request.attendeeCount}명</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>참석 인원</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>{request.attendeeCount}명</p>
                   </div>
                 )}
                 {request.purpose && (
                   <div className="md:col-span-2">
-                    <p className="text-sm text-slate-600">사용 목적</p>
-                    <p className="font-medium text-slate-900">{request.purpose}</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>사용 목적</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>{request.purpose}</p>
                   </div>
                 )}
               </div>
@@ -134,18 +134,18 @@ export default function RequestDetail() {
 
             {/* 처리 정보 */}
             {(request.status === "approved" || request.status === "partial" || request.status === "rejected") && (
-              <div className="border-t border-slate-200 pt-6">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">처리 결과</h2>
-                <div className="grid gap-4 md:grid-cols-2">
+              <div className="border-t pt-6" style={{borderColor: "#e2e8f0"}}>
+                <h2 style={{marginBottom: "1rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>처리 결과</h2>
+                <div className="grid md:grid-cols-2" style={{gap: "1rem"}}>
                   <div>
-                    <p className="text-sm text-slate-600">처리 상태</p>
-                    <p className="font-medium text-slate-900">{getStatusText(request.status)}</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>처리 상태</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>{getStatusText(request.status)}</p>
                   </div>
                   {request.status === "partial" && (
                     <>
                       <div>
-                        <p className="text-sm text-slate-600">가능 시간</p>
-                        <p className="font-medium text-slate-900">
+                        <p style={{fontSize: "0.875rem", color: "#475569"}}>가능 시간</p>
+                        <p style={{fontWeight: 500, color: "#0f172a"}}>
                           {request.approvedStartTime} ~ {request.approvedEndTime}
                         </p>
                       </div>
@@ -153,8 +153,8 @@ export default function RequestDetail() {
                   )}
                   {request.memo && (
                     <div className="md:col-span-2">
-                      <p className="text-sm text-slate-600">메모</p>
-                      <p className="font-medium text-slate-900">{request.memo}</p>
+                      <p style={{fontSize: "0.875rem", color: "#475569"}}>메모</p>
+                      <p style={{fontWeight: 500, color: "#0f172a"}}>{request.memo}</p>
                     </div>
                   )}
                 </div>
@@ -162,16 +162,16 @@ export default function RequestDetail() {
             )}
 
             {/* 생성 정보 */}
-            <div className="border-t border-slate-200 pt-6">
-              <p className="text-xs text-slate-500">
+            <div className="border-t pt-6" style={{borderColor: "#e2e8f0"}}>
+              <p className="text-xs" style={{color: "#64748b"}}>
                 요청 생성: {new Date(request.createdAt).toLocaleString("ko-KR")}
               </p>
             </div>
           </div>
 
           {/* 버튼 */}
-          <div className="mt-6">
-            <Button variant="outline" className="w-full" onClick={() => setLocation("/dashboard")}>
+          <div style={{marginTop: "1.5rem"}}>
+            <Button variant="outline" style={{width: "100%"}} onClick={() => setLocation("/dashboard")}>
               돌아가기
             </Button>
           </div>

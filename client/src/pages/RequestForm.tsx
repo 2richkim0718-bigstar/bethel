@@ -74,28 +74,28 @@ export default function RequestForm() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
       {/* 네비게이션 */}
-      <nav className="border-b border-slate-200 bg-white shadow-sm">
-        <div className="container flex items-center gap-4 py-4">
-          <button onClick={() => setLocation("/dashboard")} className="text-slate-600 hover:text-slate-900">
+      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
+        <div className="container" style={{display: "flex", alignItems: "center", gap: "1rem", paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <button onClick={() => setLocation("/dashboard")} className="hover:text-slate-900" style={{color: "#475569"}}>
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <div className="text-2xl font-bold text-accent">ChurchLink</div>
+          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
         </div>
       </nav>
 
       {/* 메인 콘텐츠 */}
-      <div className="container py-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
+        <div className="max-w-2xl" style={{marginLeft: "auto", marginRight: "auto"}}>
           {/* 완료 화면 */}
           {submitted ? (
-            <div className="card-elegant text-center py-12">
-              <div className="mb-4 inline-block rounded-lg bg-green-100 p-3">
+            <div className="card-elegant py-12" style={{textAlign: "center"}}>
+              <div className="inline-block bg-green-100" style={{marginBottom: "1rem", borderRadius: "0.5rem", padding: "0.75rem"}}>
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
-              <h2 className="mb-2 text-2xl font-bold text-slate-900">요청이 접수되었습니다!</h2>
-              <p className="mb-6 text-slate-600">
+              <h2 style={{marginBottom: "0.5rem", fontSize: "1.5rem", fontWeight: 700, color: "#0f172a"}}>요청이 접수되었습니다!</h2>
+              <p style={{marginBottom: "1.5rem", color: "#475569"}}>
                 담당 목사님이 곧 검토하실 것입니다.
                 <br />
                 알림을 통해 처리 결과를 받아보세요.
@@ -107,25 +107,25 @@ export default function RequestForm() {
           ) : !requestType ? (
             // Step 1: 요청 종류 선택
             <div>
-              <h1 className="mb-2 text-3xl font-bold text-slate-900">협조요청 신청</h1>
-              <p className="mb-8 text-slate-600">요청 종류를 선택해주세요</p>
+              <h1 style={{marginBottom: "0.5rem", fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>협조요청 신청</h1>
+              <p className="mb-8" style={{color: "#475569"}}>요청 종류를 선택해주세요</p>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid md:grid-cols-2" style={{gap: "1rem"}}>
                 <button
                   onClick={() => setRequestType("space")}
-                  className="card-elegant border-2 border-transparent transition-all hover:border-accent"
+                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
                 >
-                  <h3 className="mb-2 text-lg font-semibold text-slate-900">장소 대여</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 style={{marginBottom: "0.5rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>장소 대여</h3>
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
                     뮤직홀, 오픈홀 등 교회 장소를 대여합니다
                   </p>
                 </button>
                 <button
                   onClick={() => setRequestType("item")}
-                  className="card-elegant border-2 border-transparent transition-all hover:border-accent"
+                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
                 >
-                  <h3 className="mb-2 text-lg font-semibold text-slate-900">물품 대여</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 style={{marginBottom: "0.5rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>물품 대여</h3>
+                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
                     교회 물품을 대여합니다
                   </p>
                 </button>
@@ -134,14 +134,14 @@ export default function RequestForm() {
           ) : (
             // Step 2: 상세 정보 입력
             <div>
-              <div className="mb-6 flex items-center gap-2">
+              <div style={{marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
                 <button
                   onClick={() => setRequestType(null)}
-                  className="text-slate-600 hover:text-slate-900"
+                  className="hover:text-slate-900" style={{color: "#475569"}}
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-900">
+                <h1 style={{fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>
                   {requestType === "space" ? "장소 대여" : "물품 대여"} 신청
                 </h1>
               </div>
@@ -149,7 +149,7 @@ export default function RequestForm() {
               <div className="card-elegant space-y-6">
                 {/* 장소 또는 물품 선택 */}
                 <div>
-                  <Label htmlFor="selection" className="text-sm font-medium">
+                  <Label htmlFor="selection" style={{fontSize: "0.875rem", fontWeight: 500}}>
                     {requestType === "space" ? "장소 선택" : "물품 선택"}
                   </Label>
                   <Select
@@ -175,7 +175,7 @@ export default function RequestForm() {
 
                 {/* 날짜 선택 */}
                 <div>
-                  <Label htmlFor="requestDate" className="text-sm font-medium">
+                  <Label htmlFor="requestDate" style={{fontSize: "0.875rem", fontWeight: 500}}>
                     요청 날짜
                   </Label>
                   <Input
@@ -189,9 +189,9 @@ export default function RequestForm() {
                 </div>
 
                 {/* 시간 선택 */}
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid md:grid-cols-2" style={{gap: "1rem"}}>
                   <div>
-                    <Label htmlFor="startTime" className="text-sm font-medium">
+                    <Label htmlFor="startTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
                       시작 시간
                     </Label>
                     <Input
@@ -204,7 +204,7 @@ export default function RequestForm() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="endTime" className="text-sm font-medium">
+                    <Label htmlFor="endTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
                       종료 시간
                     </Label>
                     <Input
@@ -221,7 +221,7 @@ export default function RequestForm() {
                 {/* 물품 수량 (물품 대여인 경우) */}
                 {requestType === "item" && (
                   <div>
-                    <Label htmlFor="itemQuantity" className="text-sm font-medium">
+                    <Label htmlFor="itemQuantity" style={{fontSize: "0.875rem", fontWeight: 500}}>
                       수량
                     </Label>
                     <Input
@@ -238,7 +238,7 @@ export default function RequestForm() {
 
                 {/* 참석 인원 */}
                 <div>
-                  <Label htmlFor="attendeeCount" className="text-sm font-medium">
+                  <Label htmlFor="attendeeCount" style={{fontSize: "0.875rem", fontWeight: 500}}>
                     참석 인원 (선택)
                   </Label>
                   <Input
@@ -254,7 +254,7 @@ export default function RequestForm() {
 
                 {/* 사용 목적 */}
                 <div>
-                  <Label htmlFor="purpose" className="text-sm font-medium">
+                  <Label htmlFor="purpose" style={{fontSize: "0.875rem", fontWeight: 500}}>
                     사용 목적 (선택)
                   </Label>
                   <Textarea
@@ -269,7 +269,7 @@ export default function RequestForm() {
                 </div>
 
                 {/* 버튼 */}
-                <div className="flex gap-3 pt-4">
+                <div className="pt-4" style={{display: "flex", gap: "0.75rem"}}>
                   <Button
                     variant="outline"
                     className="flex-1"

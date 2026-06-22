@@ -43,13 +43,13 @@ export default function Dashboard() {
   const unreadNotifications = notifications?.filter(n => !n.isRead) || [];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
       {/* 네비게이션 */}
-      <nav className="border-b border-slate-200 bg-white shadow-sm">
-        <div className="container flex items-center justify-between py-4">
-          <div className="text-2xl font-bold text-accent">ChurchLink</div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">{user?.name}</span>
+      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
+        <div className="container" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
+          <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
+            <span style={{fontSize: "0.875rem", color: "#475569"}}>{user?.name}</span>
             <Button variant="outline" size="sm" onClick={logout}>
               로그아웃
             </Button>
@@ -58,15 +58,15 @@ export default function Dashboard() {
       </nav>
 
       {/* 메인 콘텐츠 */}
-      <div className="container py-8">
+      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
         {/* 헤더 */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8" style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">내 대시보드</h1>
-            <p className="mt-1 text-slate-600">협조요청 현황을 확인하세요</p>
+            <h1 style={{fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>내 대시보드</h1>
+            <p className="mt-1" style={{color: "#475569"}}>협조요청 현황을 확인하세요</p>
           </div>
           <Link href="/request/new">
-            <Button className="gap-2">
+            <Button style={{gap: "0.5rem"}}>
               <Plus className="h-4 w-4" />
               새 요청 생성
             </Button>
@@ -76,11 +76,11 @@ export default function Dashboard() {
         {/* 알림 섹션 */}
         {unreadNotifications.length > 0 && (
           <div className="mb-8 card-elegant border-l-4 border-accent bg-accent/5">
-            <div className="flex items-start gap-3">
+            <div style={{display: "flex", alignItems: "flex-start", gap: "0.75rem"}}>
               <AlertCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-slate-900">새로운 알림</h3>
-                <p className="mt-1 text-sm text-slate-600">
+                <h3 style={{fontWeight: 600, color: "#0f172a"}}>새로운 알림</h3>
+                <p className="mt-1" style={{fontSize: "0.875rem", color: "#475569"}}>
                   {unreadNotifications.length}개의 새로운 알림이 있습니다.
                 </p>
               </div>
@@ -90,31 +90,31 @@ export default function Dashboard() {
 
         {/* 요청 목록 */}
         <div>
-          <h2 className="mb-4 text-xl font-bold text-slate-900">내 협조요청</h2>
+          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>내 협조요청</h2>
           {isLoading ? (
-            <div className="flex justify-center py-12">
+            <div className="py-12" style={{display: "flex", justifyContent: "center"}}>
               <Loader2 className="h-8 w-8 animate-spin text-accent" />
             </div>
           ) : requests && requests.length > 0 ? (
             <div className="space-y-3">
               {requests.map(request => (
                 <Link key={request.id} href={`/request/${request.id}`}>
-                  <a className="card-elegant block transition-all hover:shadow-md">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
+                  <a className="card-elegant block hover:shadow-md" style={{transition: "all 0.2s ease"}}>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                      <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
                         <div className="flex-shrink-0">
                           {getStatusIcon(request.status)}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-slate-900">
+                          <h3 style={{fontWeight: 600, color: "#0f172a"}}>
                             {request.type === "space" ? "장소 대여" : "물품 대여"}
                           </h3>
-                          <p className="text-sm text-slate-600">
+                          <p style={{fontSize: "0.875rem", color: "#475569"}}>
                             {request.requestDate} {request.startTime}~{request.endTime}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div style={{display: "flex", alignItems: "center", gap: "0.75rem"}}>
                         {getStatusBadge(request.status)}
                       </div>
                     </div>
@@ -123,11 +123,11 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="card-elegant text-center py-12">
-              <Calendar className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-              <p className="text-slate-600">아직 협조요청이 없습니다.</p>
+            <div className="card-elegant py-12" style={{textAlign: "center"}}>
+              <Calendar className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
+              <p style={{color: "#475569"}}>아직 협조요청이 없습니다.</p>
               <Link href="/request/new">
-                <a className="mt-4 inline-block">
+                <a className="inline-block" style={{marginTop: "1rem"}}>
                   <Button>첫 요청 생성하기</Button>
                 </a>
               </Link>

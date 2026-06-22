@@ -72,13 +72,13 @@ export default function AdminDashboard() {
   const processedRequests = requests?.filter(r => r.status !== "pending") || [];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
       {/* 네비게이션 */}
-      <nav className="border-b border-slate-200 bg-white shadow-sm">
-        <div className="container flex items-center justify-between py-4">
-          <div className="text-2xl font-bold text-accent">ChurchLink</div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">{user?.name} (목사님)</span>
+      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
+        <div className="container" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
+          <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
+            <span style={{fontSize: "0.875rem", color: "#475569"}}>{user?.name} (목사님)</span>
             <Button variant="outline" size="sm" onClick={logout}>
               로그아웃
             </Button>
@@ -87,34 +87,34 @@ export default function AdminDashboard() {
       </nav>
 
       {/* 메인 콘텐츠 */}
-      <div className="container py-8">
+      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">협조요청 관리</h1>
-          <p className="mt-1 text-slate-600">담당 요청을 검토하고 처리하세요</p>
+          <h1 style={{fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>협조요청 관리</h1>
+          <p className="mt-1" style={{color: "#475569"}}>담당 요청을 검토하고 처리하세요</p>
         </div>
 
         {/* 대기 중인 요청 */}
         <div className="mb-12">
-          <h2 className="mb-4 text-xl font-bold text-slate-900">
+          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>
             대기 중인 요청 ({pendingRequests.length})
           </h2>
           {isLoading ? (
-            <div className="flex justify-center py-12">
+            <div className="py-12" style={{display: "flex", justifyContent: "center"}}>
               <Loader2 className="h-8 w-8 animate-spin text-accent" />
             </div>
           ) : pendingRequests.length > 0 ? (
             <div className="space-y-3">
               {pendingRequests.map(request => (
                 <div key={request.id} className="card-elegant">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                  <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                    <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
                       <Clock className="h-5 w-5 text-amber-500 flex-shrink-0" />
                       <div>
-                        <h3 className="font-semibold text-slate-900">
+                        <h3 style={{fontWeight: 600, color: "#0f172a"}}>
                           {request.type === "space" ? "장소 대여" : "물품 대여"}
                         </h3>
-                        <p className="text-sm text-slate-600">
+                        <p style={{fontSize: "0.875rem", color: "#475569"}}>
                           {request.requestDate} {request.startTime}~{request.endTime}
                         </p>
                       </div>
@@ -130,35 +130,35 @@ export default function AdminDashboard() {
               ))}
             </div>
           ) : (
-            <div className="card-elegant text-center py-12">
-              <CheckCircle className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-              <p className="text-slate-600">대기 중인 요청이 없습니다.</p>
+            <div className="card-elegant py-12" style={{textAlign: "center"}}>
+              <CheckCircle className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
+              <p style={{color: "#475569"}}>대기 중인 요청이 없습니다.</p>
             </div>
           )}
         </div>
 
         {/* 처리된 요청 */}
         <div>
-          <h2 className="mb-4 text-xl font-bold text-slate-900">
+          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>
             처리된 요청 ({processedRequests.length})
           </h2>
           {processedRequests.length > 0 ? (
             <div className="space-y-3">
               {processedRequests.map(request => (
                 <div key={request.id} className="card-elegant">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                  <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                    <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
                       {getStatusIcon(request.status)}
                       <div>
-                        <h3 className="font-semibold text-slate-900">
+                        <h3 style={{fontWeight: 600, color: "#0f172a"}}>
                           {request.type === "space" ? "장소 대여" : "물품 대여"}
                         </h3>
-                        <p className="text-sm text-slate-600">
+                        <p style={{fontSize: "0.875rem", color: "#475569"}}>
                           {request.requestDate} {request.startTime}~{request.endTime}
                         </p>
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-slate-600">
+                    <span style={{fontSize: "0.875rem", fontWeight: 500, color: "#475569"}}>
                       {request.status === "approved" && "승인됨"}
                       {request.status === "partial" && "일부 승인"}
                       {request.status === "rejected" && "거절됨"}
@@ -168,9 +168,9 @@ export default function AdminDashboard() {
               ))}
             </div>
           ) : (
-            <div className="card-elegant text-center py-12">
-              <AlertCircle className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-              <p className="text-slate-600">처리된 요청이 없습니다.</p>
+            <div className="card-elegant py-12" style={{textAlign: "center"}}>
+              <AlertCircle className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
+              <p style={{color: "#475569"}}>처리된 요청이 없습니다.</p>
             </div>
           )}
         </div>
@@ -186,20 +186,20 @@ export default function AdminDashboard() {
           {selectedRequest && (
             <div className="space-y-4">
               {/* 요청 정보 */}
-              <div className="rounded-lg bg-slate-50 p-4">
-                <p className="text-sm text-slate-600">요청 정보</p>
-                <p className="font-semibold text-slate-900">
+              <div style={{borderRadius: "0.5rem", backgroundColor: "#f8fafc", padding: "1rem"}}>
+                <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 정보</p>
+                <p style={{fontWeight: 600, color: "#0f172a"}}>
                   {selectedRequest.type === "space" ? "장소 대여" : "물품 대여"}
                 </p>
-                <p className="text-sm text-slate-600">
+                <p style={{fontSize: "0.875rem", color: "#475569"}}>
                   {selectedRequest.requestDate} {selectedRequest.startTime}~{selectedRequest.endTime}
                 </p>
               </div>
 
               {/* 처리 상태 선택 */}
               <div>
-                <Label className="text-sm font-medium">처리 상태</Label>
-                <div className="mt-2 grid gap-2">
+                <Label style={{fontSize: "0.875rem", fontWeight: 500}}>처리 상태</Label>
+                <div className="grid" style={{marginTop: "0.5rem", gap: "0.5rem"}}>
                   <button
                     onClick={() => {
                       setProcessingStatus("approved");
@@ -212,8 +212,8 @@ export default function AdminDashboard() {
                         : "border-slate-200 hover:border-green-500"
                     }`}
                   >
-                    <p className="font-medium text-slate-900">가능</p>
-                    <p className="text-sm text-slate-600">요청 시간대 전체 승인</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>가능</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 시간대 전체 승인</p>
                   </button>
 
                   <button
@@ -224,8 +224,8 @@ export default function AdminDashboard() {
                         : "border-slate-200 hover:border-blue-500"
                     }`}
                   >
-                    <p className="font-medium text-slate-900">일부가능</p>
-                    <p className="text-sm text-slate-600">가능한 시간대만 승인</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>일부가능</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>가능한 시간대만 승인</p>
                   </button>
 
                   <button
@@ -240,17 +240,17 @@ export default function AdminDashboard() {
                         : "border-slate-200 hover:border-red-500"
                     }`}
                   >
-                    <p className="font-medium text-slate-900">어려움</p>
-                    <p className="text-sm text-slate-600">요청 거절</p>
+                    <p style={{fontWeight: 500, color: "#0f172a"}}>어려움</p>
+                    <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 거절</p>
                   </button>
                 </div>
               </div>
 
               {/* 일부가능인 경우 시간 입력 */}
               {processingStatus === "partial" && (
-                <div className="grid gap-3">
+                <div className="grid" style={{gap: "0.75rem"}}>
                   <div>
-                    <Label htmlFor="approvedStartTime" className="text-sm font-medium">
+                    <Label htmlFor="approvedStartTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
                       가능 시작 시간
                     </Label>
                     <Input
@@ -262,7 +262,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="approvedEndTime" className="text-sm font-medium">
+                    <Label htmlFor="approvedEndTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
                       가능 종료 시간
                     </Label>
                     <Input
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
 
               {/* 메모 */}
               <div>
-                <Label htmlFor="memo" className="text-sm font-medium">
+                <Label htmlFor="memo" style={{fontSize: "0.875rem", fontWeight: 500}}>
                   메모 (선택)
                 </Label>
                 <Textarea
@@ -292,7 +292,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* 버튼 */}
-              <div className="flex gap-3 pt-4">
+              <div className="pt-4" style={{display: "flex", gap: "0.75rem"}}>
                 <Button
                   variant="outline"
                   className="flex-1"
