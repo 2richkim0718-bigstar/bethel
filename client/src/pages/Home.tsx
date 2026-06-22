@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* 네비게이션 */}
-      <nav className="border-b border-slate-200 bg-white shadow-sm">
+      <nav className="border-b-2 border-slate-200 bg-white shadow-sm">
         <div className="container flex items-center justify-between py-4">
           <div className="text-2xl font-bold text-accent">ChurchLink</div>
           <div className="flex items-center gap-4">

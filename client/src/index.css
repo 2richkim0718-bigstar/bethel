@@ -1,111 +1,230 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap");
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* 우아한 스타일을 위한 색상 정의 */
+:root {
+  color-scheme: light;
+  --background: 0 0% 98%;
+  --foreground: 240 10% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 20%;
+  --muted: 240 5% 65%;
+  --muted-foreground: 240 5% 40%;
+  --accent: 210 100% 50%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 5% 90%;
+  --input: 240 5% 95%;
+  --ring: 210 100% 50%;
+  --radius: 0.5rem;
+}
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: "Noto Sans KR", sans-serif;
-  }
+.dark {
+  color-scheme: dark;
+  --background: 240 10% 8%;
+  --foreground: 0 0% 95%;
+  --card: 240 10% 15%;
+  --card-foreground: 0 0% 95%;
+  --popover: 240 10% 15%;
+  --popover-foreground: 0 0% 95%;
+  --muted: 240 5% 40%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 210 100% 60%;
+  --accent-foreground: 240 10% 8%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 240 10% 8%;
+  --border: 240 5% 25%;
+  --input: 240 5% 20%;
+  --ring: 210 100% 60%;
+}
 
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Noto Sans KR", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
   .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
-
-  .flex {
-    @apply flex min-h-0 min-w-0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
-@layer components {
-  /* 우아한 스타일을 위한 색상 정의 */
-  :root {
-    color-scheme: light;
-
-    /* 기본 색상 팔레트 - 우아하고 세련된 톤 */
-    --background: 0 0% 98%;
-    --foreground: 240 10% 20%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 20%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 20%;
-    --muted: 240 5% 65%;
-    --muted-foreground: 240 5% 40%;
-    --accent: 210 100% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 240 5% 90%;
-    --input: 240 5% 95%;
-    --ring: 210 100% 50%;
-    --radius: 0.5rem;
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
+}
 
-  .dark {
-    color-scheme: dark;
-    --background: 240 10% 8%;
-    --foreground: 0 0% 95%;
-    --card: 240 10% 15%;
-    --card-foreground: 0 0% 95%;
-    --popover: 240 10% 15%;
-    --popover-foreground: 0 0% 95%;
-    --muted: 240 5% 40%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 210 100% 60%;
-    --accent-foreground: 240 10% 8%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 240 10% 8%;
-    --border: 240 5% 25%;
-    --input: 240 5% 20%;
-    --ring: 210 100% 60%;
-  }
+.flex {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+}
 
-  /* 버튼 스타일 */
-  .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-accent px-6 py-3 font-medium text-accent-foreground transition-all hover:opacity-90 active:scale-95;
-  }
+/* 버튼 스타일 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 font-medium text-foreground transition-all hover:bg-muted active:scale-95;
-  }
+.btn-primary:hover {
+  opacity: 0.9;
+}
 
-  .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-medium text-foreground transition-all hover:bg-muted active:scale-95;
-  }
+.btn-primary:active {
+  transform: scale(0.95);
+}
 
-  /* 카드 스타일 */
-  .card-elegant {
-    @apply rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md;
-  }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
 
-  /* 입력 필드 스타일 */
-  .input-elegant {
-    @apply rounded-lg border border-border bg-input px-4 py-3 text-foreground placeholder-muted-foreground transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20;
-  }
+.btn-secondary:hover {
+  background-color: hsl(var(--muted));
+}
 
-  /* 상태 배지 */
-  .badge-pending {
-    @apply inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800;
-  }
+.btn-secondary:active {
+  transform: scale(0.95);
+}
 
-  .badge-approved {
-    @apply inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800;
-  }
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: hsl(var(--foreground));
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
 
-  .badge-partial {
-    @apply inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800;
-  }
+.btn-ghost:hover {
+  background-color: hsl(var(--muted));
+}
 
-  .badge-rejected {
-    @apply inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800;
-  }
+.btn-ghost:active {
+  transform: scale(0.95);
+}
 
-  /* 섹션 구분선 */
-  .section-divider {
-    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
-  }
+/* 카드 스타일 */
+.card-elegant {
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.card-elegant:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 필드 스타일 */
+.input-elegant {
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--input));
+  color: hsl(var(--foreground));
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.input-elegant::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.input-elegant:focus {
+  border-color: hsl(var(--accent));
+  outline: none;
+  box-shadow: 0 0 0 2px hsla(var(--accent), 0.2);
+}
+
+/* 상태 배지 */
+.badge-pending {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-approved {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-partial {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-rejected {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 섹션 구분선 */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, hsl(var(--border)), transparent);
 }
 
 /* 글로벌 애니메이션 */
