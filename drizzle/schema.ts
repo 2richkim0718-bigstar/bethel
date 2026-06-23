@@ -17,6 +17,12 @@ export const users = mysqlTable("users", {
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  /** 나이 (온보딩 시 입력). */
+  age: int("age"),
+  /** 소속 부서 (성도) 또는 담당 부서 (목사님). 장소 라우팅의 기준. */
+  department: varchar("department", { length: 255 }),
+  /** 온보딩(프로필 입력) 완료 여부. 0: 미완료, 1: 완료. */
+  profileCompleted: int("profileCompleted").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
