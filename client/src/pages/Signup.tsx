@@ -1,191 +1,83 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link, useLocation } from "wouter";
-import { UserPlus, ArrowRight } from "lucide-react";
 import { getLoginUrl } from "@/const";
+import { Link } from "wouter";
+import { Church, ArrowLeft, LogIn, UserCog, PartyPopper } from "lucide-react";
 
-type Step = "role" | "info" | "complete";
+const STEPS = [
+  {
+    icon: LogIn,
+    title: "1. 로그인",
+    desc: "Manus 계정으로 안전하게 로그인합니다.",
+  },
+  {
+    icon: UserCog,
+    title: "2. 역할·부서 선택",
+    desc: "성도/목사님을 고르고 소속 부서를 입력합니다.",
+  },
+  {
+    icon: PartyPopper,
+    title: "3. 바로 시작",
+    desc: "역할에 맞는 화면에서 곧바로 사용합니다.",
+  },
+];
 
 export default function Signup() {
-  const [, setLocation] = useLocation();
-  const [step, setStep] = useState<Step>("role");
-  const [role, setRole] = useState<"pastor" | "member" | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    department: "",
-  });
-
-  const departments = [
-    "유치부",
-    "고등2부",
-    "중등2부",
-    "1청년부",
-    "2청년부",
-    "3청년부",
-  ];
-
-  const handleRoleSelect = (selectedRole: "pastor" | "member") => {
-    setRole(selectedRole);
-    setStep("info");
-  };
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleDepartmentChange = (value: string) => {
-    setFormData(prev => ({ ...prev, department: value }));
-  };
-
-  const handleSubmit = () => {
-    if (!formData.name || !formData.age || !formData.department) {
-      alert("모든 항목을 입력해주세요.");
-      return;
-    }
-    setStep("complete");
-  };
-
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-slate-100" style={{minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "1rem", paddingRight: "1rem"}}>
-      <div className="max-w-md" style={{width: "100%"}}>
-        {/* 카드 */}
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-secondary/40 to-background px-4 py-10">
+      <div className="w-full max-w-md animate-fade-in">
+        <Link href="/">
+          <span className="mb-6 inline-flex cursor-pointer items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" /> 홈으로
+          </span>
+        </Link>
+
         <div className="card-elegant">
-          {/* 로고 */}
-          <div className="mb-8" style={{textAlign: "center"}}>
-            <div className="inline-block bg-accent/10" style={{marginBottom: "1rem", borderRadius: "0.5rem", padding: "0.75rem"}}>
-              <UserPlus className="h-6 w-6 text-accent" />
-            </div>
-            <h1 style={{fontSize: "1.5rem", fontWeight: 700, color: "#0f172a"}}>ChurchLink</h1>
-            <p style={{marginTop: "0.5rem", fontSize: "0.875rem", color: "#475569"}}>회원가입</p>
+          <div className="mb-8 text-center">
+            <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <Church className="h-6 w-6" />
+            </span>
+            <h1 className="font-serif text-2xl font-bold text-foreground">
+              가입은 이렇게 진행돼요
+            </h1>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              별도의 비밀번호 없이 3단계로 시작합니다.
+            </p>
           </div>
 
-          {/* Step 1: 역할 선택 */}
-          {step === "role" && (
-            <div className="space-y-4">
-              <p style={{textAlign: "center", fontSize: "0.875rem", fontWeight: 500, color: "#0f172a"}}>
-                당신의 역할을 선택해주세요
-              </p>
-              <div className="grid" style={{gap: "0.75rem"}}>
-                <button
-                  onClick={() => handleRoleSelect("pastor")}
-                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
-                >
-                  <h3 style={{fontWeight: 600, color: "#0f172a"}}>목사님</h3>
-                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                    협조요청을 승인하고 관리합니다
-                  </p>
-                </button>
-                <button
-                  onClick={() => handleRoleSelect("member")}
-                  className="card-elegant border-2 border-transparent hover:border-accent" style={{transition: "all 0.2s ease"}}
-                >
-                  <h3 style={{fontWeight: 600, color: "#0f172a"}}>성도</h3>
-                  <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                    장소와 물품 대여를 신청합니다
-                  </p>
-                </button>
+          <div className="space-y-3">
+            {STEPS.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="flex items-start gap-3 rounded-lg border border-border p-3"
+              >
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="h-4 w-4" />
+                </span>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{desc}</p>
+                </div>
               </div>
-            </div>
-          )}
+            ))}
+          </div>
 
-          {/* Step 2: 정보 입력 */}
-          {step === "info" && role && (
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="name" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                  이름
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="이름을 입력하세요"
-                  value={formData.name}
-                  onChange={handleFormChange}
-                  className="input-elegant mt-1"
-                />
-              </div>
+          <a href={getLoginUrl()} className="mt-6 block">
+            <Button className="w-full" size="lg">
+              로그인하고 시작하기
+            </Button>
+          </a>
 
-              <div>
-                <Label htmlFor="age" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                  나이
-                </Label>
-                <Input
-                  id="age"
-                  name="age"
-                  type="number"
-                  placeholder="나이를 입력하세요"
-                  value={formData.age}
-                  onChange={handleFormChange}
-                  className="input-elegant mt-1"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="department" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                  소속 부서
-                </Label>
-                <Select value={formData.department} onValueChange={handleDepartmentChange}>
-                  <SelectTrigger className="input-elegant mt-1">
-                    <SelectValue placeholder="부서를 선택하세요" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments.map(dept => (
-                      <SelectItem key={dept} value={dept}>
-                        {dept}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="pt-4" style={{display: "flex", gap: "0.75rem"}}>
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setStep("role")}
-                >
-                  이전
-                </Button>
-                <Button className="flex-1" onClick={handleSubmit}>
-                  다음
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: 완료 */}
-          {step === "complete" && (
-            <div style={{textAlign: "center"}}>
-              <div className="inline-block bg-green-100" style={{marginBottom: "1rem", borderRadius: "0.5rem", padding: "0.75rem"}}>
-                <ArrowRight className="h-6 w-6 text-green-600" />
-              </div>
-              <h2 style={{marginBottom: "0.5rem", fontSize: "1.125rem", fontWeight: 600, color: "#0f172a"}}>
-                가입이 완료되었습니다!
-              </h2>
-              <p style={{marginBottom: "1.5rem", fontSize: "0.875rem", color: "#475569"}}>
-                이제 로그인하여 서비스를 시작할 수 있습니다.
-              </p>
-              <a href={getLoginUrl()}>
-                <Button style={{width: "100%"}}>로그인하기</Button>
-              </a>
-            </div>
-          )}
-        </div>
-
-        {/* 하단 링크 */}
-        {step === "role" && (
-          <p style={{marginTop: "1.5rem", textAlign: "center", fontSize: "0.875rem", color: "#475569"}}>
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             이미 계정이 있으신가요?{" "}
             <Link href="/login">
-              <a className="text-accent hover:underline" style={{fontWeight: 500}}>로그인</a>
+              <span className="cursor-pointer font-medium text-primary hover:underline">
+                로그인
+              </span>
             </Link>
           </p>
-        )}
+        </div>
       </div>
     </div>
   );

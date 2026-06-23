@@ -227,10 +227,10 @@ export default function ComponentsShowcase() {
   };
 
   return (
-    <div className="bg-background text-foreground" style={{minHeight: "100vh"}}>
-      <main className="container max-w-6xl" style={{marginLeft: "auto", marginRight: "auto"}}>
-        <div className="space-y-2" style={{justifyContent: "space-between", display: "flex"}}>
-          <h2 className="tracking-tight" style={{fontSize: "1.875rem", fontWeight: 700, marginBottom: "1.5rem"}}>
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="container max-w-6xl mx-auto">
+        <div className="space-y-2 justify-between flex">
+          <h2 className="text-3xl font-bold tracking-tight mb-6">
             Shadcn/ui Component Library
           </h2>
           <Button variant="outline" size="icon" onClick={toggleTheme}>
@@ -245,74 +245,74 @@ export default function ComponentsShowcase() {
         <div className="space-y-12">
           {/* Text Colors Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Text Colors</h3>
+            <h3 className="text-2xl font-semibold">Text Colors</h3>
             <Card>
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2" style={{gap: "1.5rem"}}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Foreground (Default)
                       </p>
-                      <p className="text-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-foreground text-lg">
                         Default text color for main content
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Muted Foreground
                       </p>
-                      <p className="text-muted-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-muted-foreground text-lg">
                         Muted text for secondary information
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Primary
                       </p>
-                      <p className="text-primary" style={{fontSize: "1.125rem", fontWeight: 500}}>
+                      <p className="text-primary text-lg font-medium">
                         Primary brand color text
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Secondary Foreground
                       </p>
-                      <p className="text-secondary-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-secondary-foreground text-lg">
                         Secondary action text color
                       </p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Accent Foreground
                       </p>
-                      <p className="text-accent-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-accent-foreground text-lg">
                         Accent text for emphasis
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Destructive
                       </p>
-                      <p className="text-destructive" style={{fontSize: "1.125rem", fontWeight: 500}}>
+                      <p className="text-destructive text-lg font-medium">
                         Error or destructive action text
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Card Foreground
                       </p>
-                      <p className="text-card-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-card-foreground text-lg">
                         Text color on card backgrounds
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground mb-1" style={{fontSize: "0.875rem"}}>
+                      <p className="text-sm text-muted-foreground mb-1">
                         Popover Foreground
                       </p>
-                      <p className="text-popover-foreground" style={{fontSize: "1.125rem"}}>
+                      <p className="text-popover-foreground text-lg">
                         Text color in popovers
                       </p>
                     </div>
@@ -324,55 +324,55 @@ export default function ComponentsShowcase() {
 
           {/* Color Combinations Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Color Combinations</h3>
+            <h3 className="text-2xl font-semibold">Color Combinations</h3>
             <Card>
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{gap: "1rem"}}>
-                  <div className="bg-primary text-primary-foreground" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Primary</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="bg-primary text-primary-foreground rounded-lg p-4">
+                    <p className="font-medium mb-1">Primary</p>
+                    <p className="text-sm opacity-90">
                       Primary background with foreground text
                     </p>
                   </div>
-                  <div className="bg-secondary text-secondary-foreground" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Secondary</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-secondary text-secondary-foreground rounded-lg p-4">
+                    <p className="font-medium mb-1">Secondary</p>
+                    <p className="text-sm opacity-90">
                       Secondary background with foreground text
                     </p>
                   </div>
-                  <div className="bg-muted text-muted-foreground" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Muted</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-muted text-muted-foreground rounded-lg p-4">
+                    <p className="font-medium mb-1">Muted</p>
+                    <p className="text-sm opacity-90">
                       Muted background with foreground text
                     </p>
                   </div>
-                  <div className="bg-accent text-accent-foreground" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Accent</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-accent text-accent-foreground rounded-lg p-4">
+                    <p className="font-medium mb-1">Accent</p>
+                    <p className="text-sm opacity-90">
                       Accent background with foreground text
                     </p>
                   </div>
-                  <div className="bg-destructive text-destructive-foreground" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Destructive</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-destructive text-destructive-foreground rounded-lg p-4">
+                    <p className="font-medium mb-1">Destructive</p>
+                    <p className="text-sm opacity-90">
                       Destructive background with foreground text
                     </p>
                   </div>
-                  <div className="bg-card text-card-foreground border" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Card</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-card text-card-foreground rounded-lg p-4 border">
+                    <p className="font-medium mb-1">Card</p>
+                    <p className="text-sm opacity-90">
                       Card background with foreground text
                     </p>
                   </div>
-                  <div className="bg-popover text-popover-foreground border" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Popover</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-popover text-popover-foreground rounded-lg p-4 border">
+                    <p className="font-medium mb-1">Popover</p>
+                    <p className="text-sm opacity-90">
                       Popover background with foreground text
                     </p>
                   </div>
-                  <div className="bg-background text-foreground border" style={{borderRadius: "0.5rem", padding: "1rem"}}>
-                    <p className="mb-1" style={{fontWeight: 500}}>Background</p>
-                    <p className="opacity-90" style={{fontSize: "0.875rem"}}>
+                  <div className="bg-background text-foreground rounded-lg p-4 border">
+                    <p className="font-medium mb-1">Background</p>
+                    <p className="text-sm opacity-90">
                       Default background with foreground text
                     </p>
                   </div>
@@ -383,10 +383,10 @@ export default function ComponentsShowcase() {
 
           {/* Buttons Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Buttons</h3>
+            <h3 className="text-2xl font-semibold">Buttons</h3>
             <Card>
               <CardContent className="pt-6">
-                <div className="flex-wrap" style={{display: "flex", gap: "1rem"}}>
+                <div className="flex flex-wrap gap-4">
                   <Button>Default</Button>
                   <Button variant="secondary">Secondary</Button>
                   <Button variant="destructive">Destructive</Button>
@@ -405,7 +405,7 @@ export default function ComponentsShowcase() {
 
           {/* Form Inputs Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Form Inputs</h3>
+            <h3 className="text-2xl font-semibold">Form Inputs</h3>
             <Card>
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-2">
@@ -432,22 +432,22 @@ export default function ComponentsShowcase() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-x-2" style={{display: "flex", alignItems: "center"}}>
+                <div className="flex items-center space-x-2">
                   <Checkbox id="terms" />
                   <Label htmlFor="terms">Accept terms and conditions</Label>
                 </div>
-                <div className="space-x-2" style={{display: "flex", alignItems: "center"}}>
+                <div className="flex items-center space-x-2">
                   <Switch id="airplane-mode" />
                   <Label htmlFor="airplane-mode">Airplane Mode</Label>
                 </div>
                 <div className="space-y-2">
                   <Label>Radio Group</Label>
                   <RadioGroup defaultValue="option-one">
-                    <div className="space-x-2" style={{display: "flex", alignItems: "center"}}>
+                    <div className="flex items-center space-x-2">
                       <RadioGroupItem value="option-one" id="option-one" />
                       <Label htmlFor="option-one">Option One</Label>
                     </div>
-                    <div className="space-x-2" style={{display: "flex", alignItems: "center"}}>
+                    <div className="flex items-center space-x-2">
                       <RadioGroupItem value="option-two" id="option-two" />
                       <Label htmlFor="option-two">Option Two</Label>
                     </div>
@@ -488,19 +488,19 @@ export default function ComponentsShowcase() {
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto" style={{padding: 0}} align="start">
-                      <div className="space-y-3" style={{padding: "0.75rem"}}>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <div className="p-3 space-y-3">
                         <Calendar
                           mode="single"
                           selected={datePickerDate}
                           onSelect={setDatePickerDate}
                         />
                         <div className="border-t pt-3 space-y-2">
-                          <Label style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
+                          <Label className="flex items-center gap-2">
                             <Clock className="h-4 w-4" />
                             Time
                           </Label>
-                          <div style={{display: "flex", gap: "0.5rem"}}>
+                          <div className="flex gap-2">
                             <Input
                               type="time"
                               value={
@@ -525,7 +525,7 @@ export default function ComponentsShowcase() {
                     </PopoverContent>
                   </Popover>
                   {datePickerDate && (
-                    <p className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                    <p className="text-sm text-muted-foreground">
                       Selected:{" "}
                       {format(datePickerDate, "yyyy/MM/dd  HH:mm", {
                         locale: zhCN,
@@ -541,7 +541,7 @@ export default function ComponentsShowcase() {
                         variant="outline"
                         role="combobox"
                         aria-expanded={openCombobox}
-                        style={{width: "100%", justifyContent: "space-between"}}
+                        className="w-full justify-between"
                       >
                         {selectedFramework
                           ? [
@@ -554,10 +554,10 @@ export default function ComponentsShowcase() {
                               { value: "remix", label: "Remix" },
                             ].find(fw => fw.value === selectedFramework)?.label
                           : "Select framework..."}
-                        <CalendarIcon className="ml-2 h-4 w-4 shrink-0" style={{opacity: 0.5}} />
+                        <CalendarIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent style={{width: "100%", padding: 0}}>
+                    <PopoverContent className="w-full p-0">
                       <Command>
                         <CommandInput placeholder="Search frameworks..." />
                         <CommandList>
@@ -600,7 +600,7 @@ export default function ComponentsShowcase() {
                     </PopoverContent>
                   </Popover>
                   {selectedFramework && (
-                    <p className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                    <p className="text-sm text-muted-foreground">
                       Selected:{" "}
                       {
                         [
@@ -617,9 +617,9 @@ export default function ComponentsShowcase() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-2" style={{gap: "1rem"}}>
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="month" style={{fontSize: "0.875rem", fontWeight: 500}}>
+                      <Label htmlFor="month" className="text-sm font-medium">
                         Month
                       </Label>
                       <Select
@@ -644,7 +644,7 @@ export default function ComponentsShowcase() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="year" style={{fontSize: "0.875rem", fontWeight: 500}}>
+                      <Label htmlFor="year" className="text-sm font-medium">
                         Year
                       </Label>
                       <Select
@@ -668,7 +668,7 @@ export default function ComponentsShowcase() {
                     </div>
                   </div>
                   {selectedMonth && selectedYear && (
-                    <p className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                    <p className="text-sm text-muted-foreground">
                       Selected: {selectedYear}/{selectedMonth}/
                     </p>
                   )}
@@ -679,12 +679,12 @@ export default function ComponentsShowcase() {
 
           {/* Data Display Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Data Display</h3>
+            <h3 className="text-2xl font-semibold">Data Display</h3>
             <Card>
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-2">
                   <Label>Badges</Label>
-                  <div className="flex-wrap" style={{display: "flex", gap: "0.5rem"}}>
+                  <div className="flex flex-wrap gap-2">
                     <Badge>Default</Badge>
                     <Badge variant="secondary">Secondary</Badge>
                     <Badge variant="destructive">Destructive</Badge>
@@ -694,7 +694,7 @@ export default function ComponentsShowcase() {
                 <Separator />
                 <div className="space-y-2">
                   <Label>Avatar</Label>
-                  <div style={{display: "flex", gap: "1rem"}}>
+                  <div className="flex gap-4">
                     <Avatar>
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>CN</AvatarFallback>
@@ -708,7 +708,7 @@ export default function ComponentsShowcase() {
                 <div className="space-y-2">
                   <Label>Progress</Label>
                   <Progress value={progress} />
-                  <div style={{display: "flex", gap: "0.5rem"}}>
+                  <div className="flex gap-2">
                     <Button
                       size="sm"
                       onClick={() => setProgress(Math.max(0, progress - 10))}
@@ -727,7 +727,7 @@ export default function ComponentsShowcase() {
                 <div className="space-y-2">
                   <Label>Skeleton</Label>
                   <div className="space-y-2">
-                    <Skeleton className="h-4" style={{width: "100%"}} />
+                    <Skeleton className="h-4 w-full" />
                     <Skeleton className="h-4 w-3/4" />
                     <Skeleton className="h-4 w-1/2" />
                   </div>
@@ -771,7 +771,7 @@ export default function ComponentsShowcase() {
                       </PaginationItem>
                     </PaginationContent>
                   </Pagination>
-                  <p className="text-muted-foreground" style={{fontSize: "0.875rem", textAlign: "center"}}>
+                  <p className="text-sm text-muted-foreground text-center">
                     Current page: {currentPage}
                   </p>
                 </div>
@@ -785,27 +785,27 @@ export default function ComponentsShowcase() {
                         <TableHead className="w-[100px]">Invoice</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Method</TableHead>
-                        <TableHead style={{textAlign: "right"}}>Amount</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       <TableRow>
-                        <TableCell style={{fontWeight: 500}}>INV001</TableCell>
+                        <TableCell className="font-medium">INV001</TableCell>
                         <TableCell>Paid</TableCell>
                         <TableCell>Credit Card</TableCell>
-                        <TableCell style={{textAlign: "right"}}>$250.00</TableCell>
+                        <TableCell className="text-right">$250.00</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{fontWeight: 500}}>INV002</TableCell>
+                        <TableCell className="font-medium">INV002</TableCell>
                         <TableCell>Pending</TableCell>
                         <TableCell>PayPal</TableCell>
-                        <TableCell style={{textAlign: "right"}}>$150.00</TableCell>
+                        <TableCell className="text-right">$150.00</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{fontWeight: 500}}>INV003</TableCell>
+                        <TableCell className="font-medium">INV003</TableCell>
                         <TableCell>Unpaid</TableCell>
                         <TableCell>Bank Transfer</TableCell>
-                        <TableCell style={{textAlign: "right"}}>$350.00</TableCell>
+                        <TableCell className="text-right">$350.00</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -868,7 +868,7 @@ export default function ComponentsShowcase() {
 
           {/* Alerts Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Alerts</h3>
+            <h3 className="text-2xl font-semibold">Alerts</h3>
             <div className="space-y-4">
               <Alert>
                 <AlertCircle className="h-4 w-4" />
@@ -889,9 +889,9 @@ export default function ComponentsShowcase() {
 
           {/* Tabs Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Tabs</h3>
-            <Tabs defaultValue="account" style={{width: "100%"}}>
-              <TabsList className="grid grid-cols-3" style={{width: "100%"}}>
+            <h3 className="text-2xl font-semibold">Tabs</h3>
+            <Tabs defaultValue="account" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="account">Account</TabsTrigger>
                 <TabsTrigger value="password">Password</TabsTrigger>
                 <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -947,7 +947,7 @@ export default function ComponentsShowcase() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                    <p className="text-sm text-muted-foreground">
                       Settings content goes here.
                     </p>
                   </CardContent>
@@ -958,8 +958,8 @@ export default function ComponentsShowcase() {
 
           {/* Accordion Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Accordion</h3>
-            <Accordion type="single" collapsible style={{width: "100%"}}>
+            <h3 className="text-2xl font-semibold">Accordion</h3>
+            <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Is it accessible?</AccordionTrigger>
                 <AccordionContent>
@@ -985,12 +985,12 @@ export default function ComponentsShowcase() {
 
           {/* Collapsible Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Collapsible</h3>
+            <h3 className="text-2xl font-semibold">Collapsible</h3>
             <Collapsible>
               <Card>
                 <CardHeader>
                   <CollapsibleTrigger asChild>
-                    <Button variant="ghost" style={{width: "100%", justifyContent: "space-between"}}>
+                    <Button variant="ghost" className="w-full justify-between">
                       <CardTitle>@peduarte starred 3 repositories</CardTitle>
                     </Button>
                   </CollapsibleTrigger>
@@ -998,13 +998,13 @@ export default function ComponentsShowcase() {
                 <CollapsibleContent>
                   <CardContent>
                     <div className="space-y-2">
-                      <div className="border font-mono" style={{borderRadius: "0.375rem", paddingLeft: "1rem", paddingRight: "1rem", paddingTop: "0.75rem", paddingBottom: "0.75rem", fontSize: "0.875rem"}}>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
                         @radix-ui/primitives
                       </div>
-                      <div className="border font-mono" style={{borderRadius: "0.375rem", paddingLeft: "1rem", paddingRight: "1rem", paddingTop: "0.75rem", paddingBottom: "0.75rem", fontSize: "0.875rem"}}>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
                         @radix-ui/colors
                       </div>
-                      <div className="border font-mono" style={{borderRadius: "0.375rem", paddingLeft: "1rem", paddingRight: "1rem", paddingTop: "0.75rem", paddingBottom: "0.75rem", fontSize: "0.875rem"}}>
+                      <div className="rounded-md border px-4 py-3 font-mono text-sm">
                         @stitches/react
                       </div>
                     </div>
@@ -1016,10 +1016,10 @@ export default function ComponentsShowcase() {
 
           {/* Dialog, Sheet, Drawer Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Overlays</h3>
+            <h3 className="text-2xl font-semibold">Overlays</h3>
             <Card>
               <CardContent className="pt-6">
-                <div className="flex-wrap" style={{display: "flex", gap: "1rem"}}>
+                <div className="flex flex-wrap gap-4">
                   <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
                       <Button variant="outline">Open Dialog</Button>
@@ -1031,7 +1031,7 @@ export default function ComponentsShowcase() {
                           Enter some text below. Press Enter to submit (IME composition supported).
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="space-y-4" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+                      <div className="space-y-4 py-4">
                         <div className="space-y-2">
                           <Label htmlFor="dialog-input">Input</Label>
                           <Input
@@ -1044,7 +1044,7 @@ export default function ComponentsShowcase() {
                           />
                         </div>
                       </div>
-                      <div style={{display: "flex", justifyContent: "flex-end", gap: "0.5rem"}}>
+                      <div className="flex justify-end gap-2">
                         <Button
                           variant="outline"
                           onClick={() => setDialogOpen(false)}
@@ -1097,8 +1097,8 @@ export default function ComponentsShowcase() {
                     </PopoverTrigger>
                     <PopoverContent>
                       <div className="space-y-2">
-                        <h4 className="leading-none" style={{fontWeight: 500}}>Dimensions</h4>
-                        <p className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                        <h4 className="font-medium leading-none">Dimensions</h4>
+                        <p className="text-sm text-muted-foreground">
                           Set the dimensions for the layer.
                         </p>
                       </div>
@@ -1120,10 +1120,10 @@ export default function ComponentsShowcase() {
 
           {/* Menus Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Menus</h3>
+            <h3 className="text-2xl font-semibold">Menus</h3>
             <Card>
               <CardContent className="pt-6">
-                <div className="flex-wrap" style={{display: "flex", gap: "1rem"}}>
+                <div className="flex flex-wrap gap-4">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline">Dropdown Menu</Button>
@@ -1156,8 +1156,8 @@ export default function ComponentsShowcase() {
                     </HoverCardTrigger>
                     <HoverCardContent>
                       <div className="space-y-2">
-                        <h4 style={{fontSize: "0.875rem", fontWeight: 600}}>@nextjs</h4>
-                        <p style={{fontSize: "0.875rem"}}>
+                        <h4 className="text-sm font-semibold">@nextjs</h4>
+                        <p className="text-sm">
                           The React Framework – created and maintained by
                           @vercel.
                         </p>
@@ -1171,14 +1171,14 @@ export default function ComponentsShowcase() {
 
           {/* Calendar Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Calendar</h3>
+            <h3 className="text-2xl font-semibold">Calendar</h3>
             <Card>
-              <CardContent className="pt-6" style={{display: "flex", justifyContent: "center"}}>
+              <CardContent className="pt-6 flex justify-center">
                 <Calendar
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  className="border" style={{borderRadius: "0.375rem"}}
+                  className="rounded-md border"
                 />
               </CardContent>
             </Card>
@@ -1186,17 +1186,17 @@ export default function ComponentsShowcase() {
 
           {/* Carousel Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Carousel</h3>
+            <h3 className="text-2xl font-semibold">Carousel</h3>
             <Card>
               <CardContent className="pt-6">
-                <Carousel className="max-w-xs" style={{width: "100%", marginLeft: "auto", marginRight: "auto"}}>
+                <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent>
                     {Array.from({ length: 5 }).map((_, index) => (
                       <CarouselItem key={index}>
-                        <div style={{padding: "0.25rem"}}>
+                        <div className="p-1">
                           <Card>
-                            <CardContent className="aspect-square" style={{display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem"}}>
-                              <span style={{fontSize: "2.25rem", fontWeight: 600}}>
+                            <CardContent className="flex aspect-square items-center justify-center p-6">
+                              <span className="text-4xl font-semibold">
                                 {index + 1}
                               </span>
                             </CardContent>
@@ -1214,14 +1214,14 @@ export default function ComponentsShowcase() {
 
           {/* Toggle Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Toggle</h3>
+            <h3 className="text-2xl font-semibold">Toggle</h3>
             <Card>
               <CardContent className="pt-6 space-y-4">
                 <div className="space-y-2">
                   <Label>Toggle</Label>
-                  <div style={{display: "flex", gap: "0.5rem"}}>
+                  <div className="flex gap-2">
                     <Toggle aria-label="Toggle italic">
-                      <span style={{fontWeight: 700}}>B</span>
+                      <span className="font-bold">B</span>
                     </Toggle>
                     <Toggle aria-label="Toggle italic">
                       <span className="italic">I</span>
@@ -1236,7 +1236,7 @@ export default function ComponentsShowcase() {
                   <Label>Toggle Group</Label>
                   <ToggleGroup type="multiple">
                     <ToggleGroupItem value="bold" aria-label="Toggle bold">
-                      <span style={{fontWeight: 700}}>B</span>
+                      <span className="font-bold">B</span>
                     </ToggleGroupItem>
                     <ToggleGroupItem value="italic" aria-label="Toggle italic">
                       <span className="italic">I</span>
@@ -1255,13 +1255,13 @@ export default function ComponentsShowcase() {
 
           {/* Aspect Ratio & Scroll Area Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Layout Components</h3>
+            <h3 className="text-2xl font-semibold">Layout Components</h3>
             <Card>
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-2">
                   <Label>Aspect Ratio (16/9)</Label>
                   <AspectRatio ratio={16 / 9} className="bg-muted">
-                    <div style={{display: "flex", height: "100%", alignItems: "center", justifyContent: "center"}}>
+                    <div className="flex h-full items-center justify-center">
                       <p className="text-muted-foreground">16:9 Aspect Ratio</p>
                     </div>
                   </AspectRatio>
@@ -1269,11 +1269,11 @@ export default function ComponentsShowcase() {
                 <Separator />
                 <div className="space-y-2">
                   <Label>Scroll Area</Label>
-                  <ScrollArea className="h-[200px] border overflow-hidden" style={{width: "100%", borderRadius: "0.375rem"}}>
-                    <div style={{padding: "1rem"}}>
+                  <ScrollArea className="h-[200px] w-full rounded-md border overflow-hidden">
+                    <div className="p-4">
                       <div className="space-y-4">
                         {Array.from({ length: 20 }).map((_, i) => (
-                          <div key={i} style={{fontSize: "0.875rem"}}>
+                          <div key={i} className="text-sm">
                             Item {i + 1}: This is a scrollable content area
                           </div>
                         ))}
@@ -1287,22 +1287,22 @@ export default function ComponentsShowcase() {
 
           {/* Resizable Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Resizable Panels</h3>
+            <h3 className="text-2xl font-semibold">Resizable Panels</h3>
             <Card>
               <CardContent className="pt-6">
                 <ResizablePanelGroup
                   direction="horizontal"
-                  className="min-h-[200px] border" style={{borderRadius: "0.5rem"}}
+                  className="min-h-[200px] rounded-lg border"
                 >
                   <ResizablePanel defaultSize={50}>
-                    <div style={{display: "flex", height: "100%", alignItems: "center", justifyContent: "center", padding: "1.5rem"}}>
-                      <span style={{fontWeight: 600}}>Panel One</span>
+                    <div className="flex h-full items-center justify-center p-6">
+                      <span className="font-semibold">Panel One</span>
                     </div>
                   </ResizablePanel>
                   <ResizableHandle />
                   <ResizablePanel defaultSize={50}>
-                    <div style={{display: "flex", height: "100%", alignItems: "center", justifyContent: "center", padding: "1.5rem"}}>
-                      <span style={{fontWeight: 600}}>Panel Two</span>
+                    <div className="flex h-full items-center justify-center p-6">
+                      <span className="font-semibold">Panel Two</span>
                     </div>
                   </ResizablePanel>
                 </ResizablePanelGroup>
@@ -1312,12 +1312,12 @@ export default function ComponentsShowcase() {
 
           {/* Toast Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>Toast</h3>
+            <h3 className="text-2xl font-semibold">Toast</h3>
             <Card>
               <CardContent className="pt-6 space-y-4">
                 <div className="space-y-2">
                   <Label>Sonner Toast</Label>
-                  <div className="flex-wrap" style={{display: "flex", gap: "0.5rem"}}>
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -1393,16 +1393,16 @@ export default function ComponentsShowcase() {
 
           {/* AI ChatBox Section */}
           <section className="space-y-4">
-            <h3 style={{fontSize: "1.5rem", fontWeight: 600}}>AI ChatBox</h3>
+            <h3 className="text-2xl font-semibold">AI ChatBox</h3>
             <Card>
               <CardContent className="pt-6">
                 <div className="space-y-4">
-                  <div className="text-muted-foreground" style={{fontSize: "0.875rem"}}>
+                  <div className="text-sm text-muted-foreground">
                     <p>
                       A ready-to-use chat interface component that integrates with the LLM system.
                       Features markdown rendering, auto-scrolling, and loading states.
                     </p>
-                    <p style={{marginTop: "0.5rem"}}>
+                    <p className="mt-2">
                       This is a demo with simulated responses. In a real app, you'd connect it to a tRPC mutation.
                     </p>
                   </div>
@@ -1427,8 +1427,8 @@ export default function ComponentsShowcase() {
         </div>
       </main>
 
-      <footer className="border-t mt-12" style={{paddingTop: "1.5rem", paddingBottom: "1.5rem"}}>
-        <div className="container text-muted-foreground" style={{textAlign: "center", fontSize: "0.875rem"}}>
+      <footer className="border-t py-6 mt-12">
+        <div className="container text-center text-sm text-muted-foreground">
           <p>Shadcn/ui Component Showcase</p>
         </div>
       </footer>

@@ -1,311 +1,380 @@
 import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import AppNav from "@/components/AppNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
-import { Loader2, Clock, CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import {
+  Loader2,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
+  MapPin,
+  Package,
+  User as UserIcon,
+  Inbox,
+  Check,
+} from "lucide-react";
 import { toast } from "sonner";
+import { STATUS_META } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
-function getStatusIcon(status: string) {
+type ProcStatus = "approved" | "partial" | "rejected";
+
+function StatusIcon({
+  status,
+  className,
+}: {
+  status: string;
+  className?: string;
+}) {
+  const cls = cn("h-5 w-5", className);
   switch (status) {
     case "pending":
-      return <Clock className="h-5 w-5 text-amber-500" />;
+      return <Clock className={cn(cls, "text-warning")} />;
     case "approved":
-      return <CheckCircle className="h-5 w-5 text-green-500" />;
+      return <CheckCircle2 className={cn(cls, "text-success")} />;
     case "partial":
-      return <AlertCircle className="h-5 w-5 text-blue-500" />;
+      return <AlertCircle className={cn(cls, "text-info")} />;
     case "rejected":
-      return <XCircle className="h-5 w-5 text-red-500" />;
+      return <XCircle className={cn(cls, "text-destructive")} />;
     default:
       return null;
   }
 }
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth();
-  const [selectedRequest, setSelectedRequest] = useState<any>(null);
-  const [processingStatus, setProcessingStatus] = useState<"approved" | "partial" | "rejected" | null>(null);
+  const { user } = useAuth();
+  const utils = trpc.useUtils();
+
+  const [selected, setSelected] = useState<any>(null);
+  const [procStatus, setProcStatus] = useState<ProcStatus | null>(null);
   const [approvedStartTime, setApprovedStartTime] = useState("");
   const [approvedEndTime, setApprovedEndTime] = useState("");
   const [memo, setMemo] = useState("");
+  const [tab, setTab] = useState<"pending" | "processed">("pending");
 
-  const { data: requests, isLoading, refetch } = trpc.requests.listByDepartment.useQuery({
-    department: user?.name || "",
-  });
+  const { data: requests, isLoading } =
+    trpc.requests.listByDepartment.useQuery();
+  const updateStatus = trpc.requests.updateStatus.useMutation();
 
-  const updateStatusMutation = trpc.requests.updateStatus.useMutation();
+  const resetDialog = () => {
+    setSelected(null);
+    setProcStatus(null);
+    setApprovedStartTime("");
+    setApprovedEndTime("");
+    setMemo("");
+  };
 
-  const handleProcessRequest = async () => {
-    if (!selectedRequest || !processingStatus) return;
-
-    if (processingStatus === "partial" && (!approvedStartTime || !approvedEndTime)) {
+  const handleProcess = async () => {
+    if (!selected || !procStatus) return;
+    if (procStatus === "partial" && (!approvedStartTime || !approvedEndTime)) {
       toast.error("가능한 시간 범위를 입력해주세요.");
       return;
     }
-
     try {
-      await updateStatusMutation.mutateAsync({
-        requestId: selectedRequest.id,
-        status: processingStatus,
-        approvedStartTime: processingStatus === "partial" ? approvedStartTime : undefined,
-        approvedEndTime: processingStatus === "partial" ? approvedEndTime : undefined,
-        memo,
+      await updateStatus.mutateAsync({
+        requestId: selected.id,
+        status: procStatus,
+        approvedStartTime:
+          procStatus === "partial" ? approvedStartTime : undefined,
+        approvedEndTime: procStatus === "partial" ? approvedEndTime : undefined,
+        memo: memo || undefined,
       });
-
       toast.success("요청이 처리되었습니다.");
-      setSelectedRequest(null);
-      setProcessingStatus(null);
-      setApprovedStartTime("");
-      setApprovedEndTime("");
-      setMemo("");
-      refetch();
-    } catch (error: any) {
-      toast.error(error.message || "처리 중 오류가 발생했습니다.");
+      utils.requests.listByDepartment.invalidate();
+      resetDialog();
+    } catch (e: any) {
+      toast.error(e.message || "처리 중 오류가 발생했습니다.");
     }
   };
 
-  const pendingRequests = requests?.filter(r => r.status === "pending") || [];
-  const processedRequests = requests?.filter(r => r.status !== "pending") || [];
+  const list = requests ?? [];
+  const pending = list.filter(r => r.status === "pending");
+  const processed = list.filter(r => r.status !== "pending");
+  const shown = tab === "pending" ? pending : processed;
+
+  const titleOf = (r: any) =>
+    r.type === "space"
+      ? (r.roomName ?? "장소 대여")
+      : (r.itemName ?? "물품 대여");
 
   return (
-    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
-      {/* 네비게이션 */}
-      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
-        <div className="container" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", paddingBottom: "1rem"}}>
-          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
-          <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-            <span style={{fontSize: "0.875rem", color: "#475569"}}>{user?.name} (목사님)</span>
-            <Button variant="outline" size="sm" onClick={logout}>
-              로그아웃
-            </Button>
+    <div className="min-h-screen bg-background">
+      <AppNav />
+      <div className="container py-8">
+        <div className="mb-6">
+          <h1 className="font-serif text-2xl font-bold text-foreground">
+            협조요청 관리
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {user?.department ? `${user.department} 담당` : "담당 부서"} ·
+            요청을 검토하고 처리하세요.
+          </p>
+        </div>
+
+        {!user?.department && (
+          <div className="card-elegant mb-6 border-warning/40 bg-warning/5 text-sm text-foreground">
+            담당 부서가 설정되지 않았습니다. 프로필에서 부서를 먼저
+            선택해주세요.
           </div>
-        </div>
-      </nav>
+        )}
 
-      {/* 메인 콘텐츠 */}
-      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
-        {/* 헤더 */}
-        <div className="mb-8">
-          <h1 style={{fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>협조요청 관리</h1>
-          <p className="mt-1" style={{color: "#475569"}}>담당 요청을 검토하고 처리하세요</p>
+        {/* 탭 */}
+        <div className="mb-5 inline-flex rounded-lg border border-border bg-card p-1">
+          {[
+            {
+              key: "pending" as const,
+              label: `대기 중`,
+              count: pending.length,
+            },
+            {
+              key: "processed" as const,
+              label: `처리됨`,
+              count: processed.length,
+            },
+          ].map(t => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={cn(
+                "rounded-md px-4 py-1.5 text-sm font-medium transition-colors",
+                tab === t.key
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {t.label} ({t.count})
+            </button>
+          ))}
         </div>
 
-        {/* 대기 중인 요청 */}
-        <div className="mb-12">
-          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>
-            대기 중인 요청 ({pendingRequests.length})
-          </h2>
-          {isLoading ? (
-            <div className="py-12" style={{display: "flex", justifyContent: "center"}}>
-              <Loader2 className="h-8 w-8 animate-spin text-accent" />
-            </div>
-          ) : pendingRequests.length > 0 ? (
-            <div className="space-y-3">
-              {pendingRequests.map(request => (
-                <div key={request.id} className="card-elegant">
-                  <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                    <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                      <Clock className="h-5 w-5 text-amber-500 flex-shrink-0" />
-                      <div>
-                        <h3 style={{fontWeight: 600, color: "#0f172a"}}>
-                          {request.type === "space" ? "장소 대여" : "물품 대여"}
-                        </h3>
-                        <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                          {request.requestDate} {request.startTime}~{request.endTime}
+        {isLoading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : shown.length > 0 ? (
+          <div className="space-y-3">
+            {shown.map(request => {
+              const meta = STATUS_META[request.status];
+              return (
+                <div key={request.id} className="card-elegant !p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <StatusIcon status={request.status} />
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          {request.type === "space" ? (
+                            <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                          ) : (
+                            <Package className="h-3.5 w-3.5 text-muted-foreground" />
+                          )}
+                          <h3 className="truncate font-semibold text-foreground">
+                            {titleOf(request)}
+                          </h3>
+                        </div>
+                        <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+                          <span className="inline-flex items-center gap-1">
+                            <UserIcon className="h-3.5 w-3.5" />
+                            {request.requesterName ?? "신청자"}
+                            {request.requesterDepartment
+                              ? ` (${request.requesterDepartment})`
+                              : ""}
+                          </span>
+                          <span>·</span>
+                          <span>
+                            {request.requestDate} {request.startTime}~
+                            {request.endTime}
+                          </span>
                         </p>
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      onClick={() => setSelectedRequest(request)}
-                    >
-                      처리하기
-                    </Button>
+                    {request.status === "pending" ? (
+                      <Button size="sm" onClick={() => setSelected(request)}>
+                        처리하기
+                      </Button>
+                    ) : (
+                      <span className={meta?.badgeClass}>{meta?.label}</span>
+                    )}
                   </div>
+                  {request.purpose && (
+                    <p className="mt-2 border-t border-border/60 pt-2 text-sm text-muted-foreground">
+                      목적: {request.purpose}
+                    </p>
+                  )}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="card-elegant py-12" style={{textAlign: "center"}}>
-              <CheckCircle className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
-              <p style={{color: "#475569"}}>대기 중인 요청이 없습니다.</p>
-            </div>
-          )}
-        </div>
-
-        {/* 처리된 요청 */}
-        <div>
-          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>
-            처리된 요청 ({processedRequests.length})
-          </h2>
-          {processedRequests.length > 0 ? (
-            <div className="space-y-3">
-              {processedRequests.map(request => (
-                <div key={request.id} className="card-elegant">
-                  <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                    <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                      {getStatusIcon(request.status)}
-                      <div>
-                        <h3 style={{fontWeight: 600, color: "#0f172a"}}>
-                          {request.type === "space" ? "장소 대여" : "물품 대여"}
-                        </h3>
-                        <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                          {request.requestDate} {request.startTime}~{request.endTime}
-                        </p>
-                      </div>
-                    </div>
-                    <span style={{fontSize: "0.875rem", fontWeight: 500, color: "#475569"}}>
-                      {request.status === "approved" && "승인됨"}
-                      {request.status === "partial" && "일부 승인"}
-                      {request.status === "rejected" && "거절됨"}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="card-elegant py-12" style={{textAlign: "center"}}>
-              <AlertCircle className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
-              <p style={{color: "#475569"}}>처리된 요청이 없습니다.</p>
-            </div>
-          )}
-        </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="card-elegant flex flex-col items-center py-16 text-center">
+            <Inbox className="mb-3 h-10 w-10 text-muted-foreground/40" />
+            <p className="text-muted-foreground">
+              {tab === "pending"
+                ? "대기 중인 요청이 없습니다."
+                : "처리된 요청이 없습니다."}
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* 요청 처리 다이얼로그 */}
-      <Dialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
+      {/* 처리 다이얼로그 */}
+      <Dialog open={!!selected} onOpenChange={open => !open && resetDialog()}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>협조요청 처리</DialogTitle>
+            <DialogDescription>
+              요청 내용을 확인하고 처리 상태를 선택하세요.
+            </DialogDescription>
           </DialogHeader>
 
-          {selectedRequest && (
+          {selected && (
             <div className="space-y-4">
-              {/* 요청 정보 */}
-              <div style={{borderRadius: "0.5rem", backgroundColor: "#f8fafc", padding: "1rem"}}>
-                <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 정보</p>
-                <p style={{fontWeight: 600, color: "#0f172a"}}>
-                  {selectedRequest.type === "space" ? "장소 대여" : "물품 대여"}
+              <div className="rounded-lg bg-secondary/50 p-4 text-sm">
+                <p className="font-semibold text-foreground">
+                  {titleOf(selected)}
                 </p>
-                <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                  {selectedRequest.requestDate} {selectedRequest.startTime}~{selectedRequest.endTime}
+                <p className="mt-1 text-muted-foreground">
+                  신청자: {selected.requesterName ?? "-"}
+                  {selected.requesterDepartment
+                    ? ` (${selected.requesterDepartment})`
+                    : ""}
                 </p>
+                <p className="text-muted-foreground">
+                  {selected.requestDate} {selected.startTime}~{selected.endTime}
+                  {selected.type === "item" && selected.itemQuantity
+                    ? ` · 수량 ${selected.itemQuantity}`
+                    : ""}
+                </p>
+                {selected.purpose && (
+                  <p className="mt-1 text-muted-foreground">
+                    목적: {selected.purpose}
+                  </p>
+                )}
               </div>
 
-              {/* 처리 상태 선택 */}
               <div>
-                <Label style={{fontSize: "0.875rem", fontWeight: 500}}>처리 상태</Label>
-                <div className="grid" style={{marginTop: "0.5rem", gap: "0.5rem"}}>
-                  <button
-                    onClick={() => {
-                      setProcessingStatus("approved");
-                      setApprovedStartTime("");
-                      setApprovedEndTime("");
-                    }}
-                    className={`p-3 rounded-lg border-2 transition-all text-left ${
-                      processingStatus === "approved"
-                        ? "border-green-500 bg-green-50"
-                        : "border-slate-200 hover:border-green-500"
-                    }`}
-                  >
-                    <p style={{fontWeight: 500, color: "#0f172a"}}>가능</p>
-                    <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 시간대 전체 승인</p>
-                  </button>
-
-                  <button
-                    onClick={() => setProcessingStatus("partial")}
-                    className={`p-3 rounded-lg border-2 transition-all text-left ${
-                      processingStatus === "partial"
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 hover:border-blue-500"
-                    }`}
-                  >
-                    <p style={{fontWeight: 500, color: "#0f172a"}}>일부가능</p>
-                    <p style={{fontSize: "0.875rem", color: "#475569"}}>가능한 시간대만 승인</p>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setProcessingStatus("rejected");
-                      setApprovedStartTime("");
-                      setApprovedEndTime("");
-                    }}
-                    className={`p-3 rounded-lg border-2 transition-all text-left ${
-                      processingStatus === "rejected"
-                        ? "border-red-500 bg-red-50"
-                        : "border-slate-200 hover:border-red-500"
-                    }`}
-                  >
-                    <p style={{fontWeight: 500, color: "#0f172a"}}>어려움</p>
-                    <p style={{fontSize: "0.875rem", color: "#475569"}}>요청 거절</p>
-                  </button>
+                <Label className="text-sm font-medium">처리 상태</Label>
+                <div className="mt-2 grid gap-2">
+                  {[
+                    {
+                      key: "approved" as const,
+                      title: "가능",
+                      desc: "요청 시간대 전체 승인",
+                      active: "border-success bg-success/10",
+                    },
+                    {
+                      key: "partial" as const,
+                      title: "일부가능",
+                      desc: "가능한 시간대만 승인",
+                      active: "border-info bg-info/10",
+                    },
+                    {
+                      key: "rejected" as const,
+                      title: "어려움",
+                      desc: "요청 거절",
+                      active: "border-destructive bg-destructive/10",
+                    },
+                  ].map(opt => (
+                    <button
+                      key={opt.key}
+                      onClick={() => {
+                        setProcStatus(opt.key);
+                        if (opt.key !== "partial") {
+                          setApprovedStartTime("");
+                          setApprovedEndTime("");
+                        }
+                      }}
+                      className={cn(
+                        "flex items-center justify-between rounded-lg border-2 p-3 text-left transition-all",
+                        procStatus === opt.key
+                          ? opt.active
+                          : "border-border hover:border-muted-foreground/40"
+                      )}
+                    >
+                      <span>
+                        <span className="block font-medium text-foreground">
+                          {opt.title}
+                        </span>
+                        <span className="block text-sm text-muted-foreground">
+                          {opt.desc}
+                        </span>
+                      </span>
+                      {procStatus === opt.key && (
+                        <Check className="h-4 w-4 text-foreground" />
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* 일부가능인 경우 시간 입력 */}
-              {processingStatus === "partial" && (
-                <div className="grid" style={{gap: "0.75rem"}}>
+              {procStatus === "partial" && (
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="approvedStartTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                      가능 시작 시간
+                    <Label htmlFor="ast" className="text-sm font-medium">
+                      가능 시작
                     </Label>
                     <Input
-                      id="approvedStartTime"
+                      id="ast"
                       type="time"
                       value={approvedStartTime}
-                      onChange={(e) => setApprovedStartTime(e.target.value)}
-                      className="input-elegant mt-1"
+                      onChange={e => setApprovedStartTime(e.target.value)}
+                      className="input-elegant mt-1.5 w-full"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="approvedEndTime" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                      가능 종료 시간
+                    <Label htmlFor="aet" className="text-sm font-medium">
+                      가능 종료
                     </Label>
                     <Input
-                      id="approvedEndTime"
+                      id="aet"
                       type="time"
                       value={approvedEndTime}
-                      onChange={(e) => setApprovedEndTime(e.target.value)}
-                      className="input-elegant mt-1"
+                      onChange={e => setApprovedEndTime(e.target.value)}
+                      className="input-elegant mt-1.5 w-full"
                     />
                   </div>
                 </div>
               )}
 
-              {/* 메모 */}
               <div>
-                <Label htmlFor="memo" style={{fontSize: "0.875rem", fontWeight: 500}}>
-                  메모 (선택)
+                <Label htmlFor="memo" className="text-sm font-medium">
+                  메모 <span className="text-muted-foreground">(선택)</span>
                 </Label>
                 <Textarea
                   id="memo"
                   placeholder="사유 또는 안내사항을 입력하세요"
                   value={memo}
-                  onChange={(e) => setMemo(e.target.value)}
-                  className="input-elegant mt-1"
+                  onChange={e => setMemo(e.target.value)}
+                  className="input-elegant mt-1.5 w-full"
                   rows={3}
                 />
               </div>
 
-              {/* 버튼 */}
-              <div className="pt-4" style={{display: "flex", gap: "0.75rem"}}>
+              <div className="flex gap-3 pt-2">
                 <Button
                   variant="outline"
                   className="flex-1"
-                  onClick={() => setSelectedRequest(null)}
+                  onClick={resetDialog}
                 >
                   취소
                 </Button>
                 <Button
                   className="flex-1"
-                  onClick={handleProcessRequest}
-                  disabled={!processingStatus || updateStatusMutation.isPending}
+                  onClick={handleProcess}
+                  disabled={!procStatus || updateStatus.isPending}
                 >
-                  {updateStatusMutation.isPending ? "처리 중..." : "처리 완료"}
+                  {updateStatus.isPending ? "처리 중..." : "처리 완료"}
                 </Button>
               </div>
             </div>

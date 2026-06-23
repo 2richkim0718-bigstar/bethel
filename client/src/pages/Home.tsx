@@ -2,120 +2,210 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle, Users, Calendar, Bell } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Users,
+  CalendarCheck,
+  Bell,
+  Church,
+  ShieldCheck,
+  Clock,
+} from "lucide-react";
+
+const FEATURES = [
+  {
+    icon: CalendarCheck,
+    title: "간편한 신청",
+    desc: "장소·물품, 날짜와 시간을 고르면 몇 번의 클릭으로 협조요청이 완료됩니다.",
+  },
+  {
+    icon: Users,
+    title: "역할별 화면",
+    desc: "성도와 목사님의 화면을 분리해 각자에게 꼭 필요한 기능만 보여줍니다.",
+  },
+  {
+    icon: Bell,
+    title: "실시간 알림",
+    desc: "승인·일부승인·반려 결과를 인앱 알림으로 즉시 받아보세요.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "중복 방지",
+    desc: "같은 장소·시간대의 중복 신청을 자동으로 감지해 안내합니다.",
+  },
+];
+
+const STEPS = [
+  { step: "01", title: "신청", desc: "성도가 장소·물품 대여를 요청합니다." },
+  {
+    step: "02",
+    title: "알림",
+    desc: "담당 목사님에게 즉시 알림이 전달됩니다.",
+  },
+  { step: "03", title: "처리", desc: "가능·일부가능·어려움으로 응답합니다." },
+  { step: "04", title: "확인", desc: "신청자가 결과 알림을 받습니다." },
+];
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
+  const homePath = user?.role === "admin" ? "/admin/requests" : "/dashboard";
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-slate-100" style={{minHeight: "100vh"}}>
+    <div className="min-h-screen bg-background">
       {/* 네비게이션 */}
-      <nav className="border-b-2" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
-        <div className="container" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", paddingBottom: "1rem"}}>
-          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
-          <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
+      <nav className="sticky top-0 z-30 border-b border-border/70 bg-card/80 backdrop-blur">
+        <div className="container flex h-16 items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+              <Church className="h-5 w-5" />
+            </span>
+            <span className="font-serif text-xl font-bold text-foreground">
+              ChurchLink
+            </span>
+          </span>
+          <div className="flex items-center gap-2">
             {isAuthenticated ? (
-              <>
-                <span style={{fontSize: "0.875rem", color: "#475569"}}>{user?.name || "사용자"}</span>
-                <Link href="/dashboard">
-                  <Button variant="outline" size="sm">
-                    대시보드
-                  </Button>
-                </Link>
-              </>
+              <Link href={homePath}>
+                <Button size="sm">대시보드로 이동</Button>
+              </Link>
             ) : (
-              <>
-                <a href={getLoginUrl()}>
-                  <Button variant="outline" size="sm">
-                    로그인
-                  </Button>
-                </a>
-                <Link href="/signup">
-                  <Button size="sm">회원가입</Button>
-                </Link>
-              </>
+              <a href={getLoginUrl()}>
+                <Button size="sm">로그인 / 시작하기</Button>
+              </a>
             )}
           </div>
         </div>
       </nav>
 
-      {/* 히어로 섹션 */}
-      <section className="container" style={{paddingTop: "5rem", paddingBottom: "5rem", textAlign: "center"}}>
-        <h1 style={{marginBottom: "1.5rem", fontSize: "3rem", fontWeight: 700, color: "#0f172a"}}>
-          교회 장소·물품 대여를
-          <br />
-          <span className="text-accent">디지털로 관리하세요</span>
-        </h1>
-        <p className="mb-8" style={{fontSize: "1.25rem", color: "#475569"}}>
-          성도와 목사님 간의 협조요청을 간편하게 처리하고,
-          <br />
-          실시간 알림으로 신청 상태를 추적하세요.
-        </p>
-        <div style={{display: "flex", justifyContent: "center", gap: "1rem"}}>
-          {!isAuthenticated && (
-            <>
-              <a href={getLoginUrl()}>
-                <Button size="lg" style={{gap: "0.5rem"}}>
-                  로그인 <ArrowRight className="h-4 w-4" />
-                </Button>
-              </a>
-              <Link href="/signup">
-                <Button size="lg" variant="outline">
-                  회원가입
+      {/* 히어로 */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-secondary/50 via-background to-background" />
+        <div className="container py-20 text-center md:py-28">
+          <span className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            교회 장소·물품 대여 협조요청 시스템
+          </span>
+          <h1 className="mx-auto max-w-3xl font-serif text-4xl font-bold leading-tight text-foreground md:text-5xl">
+            교회의 공간과 물품을
+            <br />
+            <span className="text-primary">은혜롭게, 질서있게</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+            성도와 목사님 사이의 협조요청을 한곳에서. 신청부터 승인, 알림까지
+            번거로움 없이 처리하세요.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            {isAuthenticated ? (
+              <Link href={homePath}>
+                <Button size="lg" className="gap-2">
+                  대시보드로 이동 <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-            </>
-          )}
-        </div>
-      </section>
-
-      {/* 기능 소개 */}
-      <section className="py-16" style={{backgroundColor: "white"}}>
-        <div className="container">
-          <h2 className="mb-12" style={{textAlign: "center", fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>주요 기능</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4" style={{gap: "2rem"}}>
-            {/* 기능 카드 1 */}
-            <div className="card-elegant">
-              <Calendar className="h-8 w-8 text-accent" style={{marginBottom: "1rem"}} />
-              <h3 style={{marginBottom: "0.5rem", fontWeight: 600, color: "#0f172a"}}>간편한 신청</h3>
-              <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                날짜, 시간, 목적을 선택하고 클릭 몇 번으로 협조요청을 완료하세요.
-              </p>
-            </div>
-
-            {/* 기능 카드 2 */}
-            <div className="card-elegant">
-              <Users className="h-8 w-8 text-accent" style={{marginBottom: "1rem"}} />
-              <h3 style={{marginBottom: "0.5rem", fontWeight: 600, color: "#0f172a"}}>역할별 관리</h3>
-              <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                성도와 목사님의 역할을 구분하여 맞춤형 기능을 제공합니다.
-              </p>
-            </div>
-
-            {/* 기능 카드 3 */}
-            <div className="card-elegant">
-              <Bell className="h-8 w-8 text-accent" style={{marginBottom: "1rem"}} />
-              <h3 style={{marginBottom: "0.5rem", fontWeight: 600, color: "#0f172a"}}>실시간 알림</h3>
-              <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                승인, 부분승인, 거절 상태를 즉시 알림으로 받아보세요.
-              </p>
-            </div>
-
-            {/* 기능 카드 4 */}
-            <div className="card-elegant">
-              <CheckCircle className="h-8 w-8 text-accent" style={{marginBottom: "1rem"}} />
-              <h3 style={{marginBottom: "0.5rem", fontWeight: 600, color: "#0f172a"}}>충돌 방지</h3>
-              <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                동일 시간대 중복 신청을 자동으로 감지하고 방지합니다.
-              </p>
-            </div>
+            ) : (
+              <>
+                <a href={getLoginUrl()}>
+                  <Button size="lg" className="gap-2">
+                    시작하기 <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </a>
+                <Link href="/signup">
+                  <Button size="lg" variant="outline">
+                    서비스 둘러보기
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
 
+      {/* 주요 기능 */}
+      <section className="container py-16">
+        <div className="mb-12 text-center">
+          <h2 className="font-serif text-3xl font-bold text-foreground">
+            주요 기능
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            꼭 필요한 기능만 담았습니다.
+          </p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {FEATURES.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="card-elegant">
+              <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" />
+              </span>
+              <h3 className="mb-1.5 font-semibold text-foreground">{title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 진행 흐름 */}
+      <section className="border-y border-border bg-secondary/30 py-16">
+        <div className="container">
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-3xl font-bold text-foreground">
+              진행 흐름
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              신청에서 결과 확인까지 4단계.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map(({ step, title, desc }, i) => (
+              <div key={step} className="relative">
+                <div className="card-elegant h-full">
+                  <span className="font-serif text-2xl font-bold text-gold">
+                    {step}
+                  </span>
+                  <h3 className="mb-1 mt-2 font-semibold text-foreground">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{desc}</p>
+                </div>
+                {i < STEPS.length - 1 && (
+                  <ArrowRight className="absolute -right-3 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-border lg:block" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="container py-20 text-center">
+        <Clock className="mx-auto mb-4 h-10 w-10 text-gold" />
+        <h2 className="font-serif text-3xl font-bold text-foreground">
+          지금 시작해보세요
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+          몇 분이면 충분합니다. 로그인 후 역할을 선택하면 바로 사용할 수
+          있습니다.
+        </p>
+        {!isAuthenticated && (
+          <a href={getLoginUrl()} className="mt-6 inline-block">
+            <Button size="lg" className="gap-2">
+              <CheckCircle2 className="h-4 w-4" /> 무료로 시작하기
+            </Button>
+          </a>
+        )}
+      </section>
+
       {/* 푸터 */}
-      <footer className="border-t" style={{borderColor: "#e2e8f0", backgroundColor: "#0f172a", paddingTop: "2rem", paddingBottom: "2rem", textAlign: "center", color: "#94a3b8"}}>
-        <p>&copy; 2026 ChurchLink. 모든 권리 보유.</p>
+      <footer className="border-t border-border bg-card py-8">
+        <div className="container flex flex-col items-center gap-2 text-center">
+          <span className="flex items-center gap-2 font-serif font-bold text-foreground">
+            <Church className="h-4 w-4 text-primary" /> ChurchLink
+          </span>
+          <p className="text-xs text-muted-foreground">
+            &copy; 2026 ChurchLink. 교회 협조요청 시스템.
+          </p>
+        </div>
       </footer>
     </div>
   );

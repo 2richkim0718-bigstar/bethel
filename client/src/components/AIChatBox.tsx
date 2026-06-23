@@ -199,21 +199,21 @@ export function AIChatBox({
       {/* Messages Area */}
       <div ref={scrollAreaRef} className="flex-1 overflow-hidden">
         {displayMessages.length === 0 ? (
-          <div style={{display: "flex", height: "100%", flexDirection: "column", padding: "1rem"}}>
-            <div className="flex-1 text-muted-foreground" style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem"}}>
-              <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem"}}>
+          <div className="flex h-full flex-col p-4">
+            <div className="flex flex-1 flex-col items-center justify-center gap-6 text-muted-foreground">
+              <div className="flex flex-col items-center gap-3">
                 <Sparkles className="size-12 opacity-20" />
-                <p style={{fontSize: "0.875rem"}}>{emptyStateMessage}</p>
+                <p className="text-sm">{emptyStateMessage}</p>
               </div>
 
               {suggestedPrompts && suggestedPrompts.length > 0 && (
-                <div className="max-w-2xl flex-wrap" style={{display: "flex", justifyContent: "center", gap: "0.5rem"}}>
+                <div className="flex max-w-2xl flex-wrap justify-center gap-2">
                   {suggestedPrompts.map((prompt, index) => (
                     <button
                       key={index}
                       onClick={() => onSendMessage(prompt)}
                       disabled={isLoading}
-                      className="border border-border bg-card transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50" style={{borderRadius: "0.5rem", paddingLeft: "1rem", paddingRight: "1rem", paddingTop: "0.5rem", paddingBottom: "0.5rem", fontSize: "0.875rem"}}
+                      className="rounded-lg border border-border bg-card px-4 py-2 text-sm transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {prompt}
                     </button>
@@ -223,8 +223,8 @@ export function AIChatBox({
             </div>
           </div>
         ) : (
-          <ScrollArea style={{height: "100%"}}>
-            <div className="space-y-4" style={{display: "flex", flexDirection: "column", padding: "1rem"}}>
+          <ScrollArea className="h-full">
+            <div className="flex flex-col space-y-4 p-4">
               {displayMessages.map((message, index) => {
                 // Apply min-height to last message only if NOT loading (when loading, the loading indicator gets it)
                 const isLastMessage = index === displayMessages.length - 1;
@@ -247,7 +247,7 @@ export function AIChatBox({
                     }
                   >
                     {message.role === "assistant" && (
-                      <div className="size-8 shrink-0 mt-1 bg-primary/10" style={{borderRadius: "9999px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                      <div className="size-8 shrink-0 mt-1 rounded-full bg-primary/10 flex items-center justify-center">
                         <Sparkles className="size-4 text-primary" />
                       </div>
                     )}
@@ -265,14 +265,14 @@ export function AIChatBox({
                           <Streamdown>{message.content}</Streamdown>
                         </div>
                       ) : (
-                        <p className="whitespace-pre-wrap" style={{fontSize: "0.875rem"}}>
+                        <p className="whitespace-pre-wrap text-sm">
                           {message.content}
                         </p>
                       )}
                     </div>
 
                     {message.role === "user" && (
-                      <div className="size-8 shrink-0 mt-1 bg-secondary" style={{borderRadius: "9999px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                      <div className="size-8 shrink-0 mt-1 rounded-full bg-secondary flex items-center justify-center">
                         <User className="size-4 text-secondary-foreground" />
                       </div>
                     )}
@@ -282,19 +282,17 @@ export function AIChatBox({
 
               {isLoading && (
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    gap: "0.75rem",
-                    ...(minHeightForLastMessage > 0
+                  className="flex items-start gap-3"
+                  style={
+                    minHeightForLastMessage > 0
                       ? { minHeight: `${minHeightForLastMessage}px` }
-                      : {})
-                  }}
+                      : undefined
+                  }
                 >
-                  <div className="size-8 shrink-0 mt-1 bg-primary/10" style={{borderRadius: "9999px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                  <div className="size-8 shrink-0 mt-1 rounded-full bg-primary/10 flex items-center justify-center">
                     <Sparkles className="size-4 text-primary" />
                   </div>
-                  <div className="bg-muted py-2.5" style={{borderRadius: "0.5rem", paddingLeft: "1rem", paddingRight: "1rem"}}>
+                  <div className="rounded-lg bg-muted px-4 py-2.5">
                     <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   </div>
                 </div>
@@ -308,7 +306,7 @@ export function AIChatBox({
       <form
         ref={inputAreaRef}
         onSubmit={handleSubmit}
-        className="border-t bg-background/50" style={{display: "flex", gap: "0.5rem", padding: "1rem", alignItems: "flex-end"}}
+        className="flex gap-2 p-4 border-t bg-background/50 items-end"
       >
         <Textarea
           ref={textareaRef}

@@ -125,7 +125,7 @@ function MenubarCheckboxItem({
       checked={checked}
       {...props}
     >
-      <span className="absolute left-2 size-3.5" style={{pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center"}}>
+      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
           <CheckIcon className="size-4" />
         </MenubarPrimitive.ItemIndicator>
@@ -149,7 +149,7 @@ function MenubarRadioItem({
       )}
       {...props}
     >
-      <span className="absolute left-2 size-3.5" style={{pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center"}}>
+      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
           <CircleIcon className="size-2 fill-current" />
         </MenubarPrimitive.ItemIndicator>

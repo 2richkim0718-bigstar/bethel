@@ -1,140 +1,225 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import AppNav from "@/components/AppNav";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { trpc } from "@/lib/trpc";
-import { Link } from "wouter";
-import { Plus, Calendar, AlertCircle, CheckCircle, XCircle, Clock } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { useState } from "react";
+import {
+  Plus,
+  CalendarDays,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
+  MapPin,
+  Package,
+  Loader2,
+  Trash2,
+  ChevronRight,
+} from "lucide-react";
+import { STATUS_META } from "@/lib/constants";
+import { toast } from "sonner";
 
-function getStatusBadge(status: string) {
+function StatusIcon({ status }: { status: string }) {
+  const cls = "h-5 w-5";
   switch (status) {
     case "pending":
-      return <span className="badge-pending">대기 중</span>;
+      return <Clock className={`${cls} text-warning`} />;
     case "approved":
-      return <span className="badge-approved">승인됨</span>;
+      return <CheckCircle2 className={`${cls} text-success`} />;
     case "partial":
-      return <span className="badge-partial">일부 승인</span>;
+      return <AlertCircle className={`${cls} text-info`} />;
     case "rejected":
-      return <span className="badge-rejected">거절됨</span>;
-    default:
-      return null;
-  }
-}
-
-function getStatusIcon(status: string) {
-  switch (status) {
-    case "pending":
-      return <Clock className="h-5 w-5 text-amber-500" />;
-    case "approved":
-      return <CheckCircle className="h-5 w-5 text-green-500" />;
-    case "partial":
-      return <AlertCircle className="h-5 w-5 text-blue-500" />;
-    case "rejected":
-      return <XCircle className="h-5 w-5 text-red-500" />;
+      return <XCircle className={`${cls} text-destructive`} />;
     default:
       return null;
   }
 }
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const [, setLocation] = useLocation();
+  const utils = trpc.useUtils();
   const { data: requests, isLoading } = trpc.requests.listMy.useQuery();
-  const { data: notifications } = trpc.notifications.list.useQuery();
+  const [cancelId, setCancelId] = useState<number | null>(null);
 
-  const unreadNotifications = notifications?.filter(n => !n.isRead) || [];
+  const cancelMutation = trpc.requests.cancel.useMutation({
+    onSuccess: () => {
+      toast.success("요청이 취소되었습니다.");
+      utils.requests.listMy.invalidate();
+      setCancelId(null);
+    },
+    onError: e => toast.error(e.message || "취소에 실패했습니다."),
+  });
+
+  const list = requests ?? [];
+  const stats = {
+    total: list.length,
+    pending: list.filter(r => r.status === "pending").length,
+    approved: list.filter(
+      r => r.status === "approved" || r.status === "partial"
+    ).length,
+  };
 
   return (
-    <div style={{minHeight: "100vh", backgroundColor: "#f8fafc"}}>
-      {/* 네비게이션 */}
-      <nav className="border-b" style={{borderColor: "#e2e8f0", backgroundColor: "white", boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"}}>
-        <div className="container" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", paddingBottom: "1rem"}}>
-          <div className="text-accent" style={{fontSize: "1.5rem", fontWeight: 700}}>ChurchLink</div>
-          <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-            <span style={{fontSize: "0.875rem", color: "#475569"}}>{user?.name}</span>
-            <Button variant="outline" size="sm" onClick={logout}>
-              로그아웃
-            </Button>
-          </div>
-        </div>
-      </nav>
-
-      {/* 메인 콘텐츠 */}
-      <div className="container" style={{paddingTop: "2rem", paddingBottom: "2rem"}}>
+    <div className="min-h-screen bg-background">
+      <AppNav />
+      <div className="container py-8">
         {/* 헤더 */}
-        <div className="mb-8" style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 style={{fontSize: "1.875rem", fontWeight: 700, color: "#0f172a"}}>내 대시보드</h1>
-            <p className="mt-1" style={{color: "#475569"}}>협조요청 현황을 확인하세요</p>
+            <h1 className="font-serif text-2xl font-bold text-foreground">
+              내 대시보드
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              협조요청 현황을 한눈에 확인하세요.
+            </p>
           </div>
           <Link href="/request/new">
-            <Button style={{gap: "0.5rem"}}>
-              <Plus className="h-4 w-4" />
-              새 요청 생성
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" /> 새 요청
             </Button>
           </Link>
         </div>
 
-        {/* 알림 섹션 */}
-        {unreadNotifications.length > 0 && (
-          <div className="mb-8 card-elegant border-l-4 border-accent bg-accent/5">
-            <div style={{display: "flex", alignItems: "flex-start", gap: "0.75rem"}}>
-              <AlertCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 style={{fontWeight: 600, color: "#0f172a"}}>새로운 알림</h3>
-                <p className="mt-1" style={{fontSize: "0.875rem", color: "#475569"}}>
-                  {unreadNotifications.length}개의 새로운 알림이 있습니다.
-                </p>
-              </div>
+        {/* 요약 카드 */}
+        <div className="mb-8 grid grid-cols-3 gap-3">
+          {[
+            {
+              label: "전체",
+              value: stats.total,
+              icon: CalendarDays,
+              color: "text-primary",
+            },
+            {
+              label: "대기 중",
+              value: stats.pending,
+              icon: Clock,
+              color: "text-warning",
+            },
+            {
+              label: "승인됨",
+              value: stats.approved,
+              icon: CheckCircle2,
+              color: "text-success",
+            },
+          ].map(s => (
+            <div key={s.label} className="card-elegant !p-4">
+              <s.icon className={`mb-2 h-5 w-5 ${s.color}`} />
+              <p className="text-2xl font-bold text-foreground">{s.value}</p>
+              <p className="text-xs text-muted-foreground">{s.label}</p>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
 
         {/* 요청 목록 */}
-        <div>
-          <h2 style={{marginBottom: "1rem", fontSize: "1.25rem", fontWeight: 700, color: "#0f172a"}}>내 협조요청</h2>
-          {isLoading ? (
-            <div className="py-12" style={{display: "flex", justifyContent: "center"}}>
-              <Loader2 className="h-8 w-8 animate-spin text-accent" />
-            </div>
-          ) : requests && requests.length > 0 ? (
-            <div className="space-y-3">
-              {requests.map(request => (
-                <Link key={request.id} href={`/request/${request.id}`}>
-                  <a className="card-elegant block hover:shadow-md" style={{transition: "all 0.2s ease"}}>
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                      <div style={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                        <div className="flex-shrink-0">
-                          {getStatusIcon(request.status)}
-                        </div>
-                        <div>
-                          <h3 style={{fontWeight: 600, color: "#0f172a"}}>
-                            {request.type === "space" ? "장소 대여" : "물품 대여"}
-                          </h3>
-                          <p style={{fontSize: "0.875rem", color: "#475569"}}>
-                            {request.requestDate} {request.startTime}~{request.endTime}
-                          </p>
-                        </div>
+        <h2 className="mb-3 text-lg font-semibold text-foreground">
+          내 협조요청
+        </h2>
+        {isLoading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : list.length > 0 ? (
+          <div className="space-y-3">
+            {list.map(request => {
+              const meta = STATUS_META[request.status];
+              const title =
+                request.type === "space"
+                  ? (request.roomName ?? "장소 대여")
+                  : (request.itemName ?? "물품 대여");
+              return (
+                <div key={request.id} className="card-elegant !p-4">
+                  <div className="flex items-center gap-3">
+                    <StatusIcon status={request.status} />
+                    <button
+                      className="min-w-0 flex-1 text-left"
+                      onClick={() => setLocation(`/request/${request.id}`)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {request.type === "space" ? (
+                          <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                        ) : (
+                          <Package className="h-3.5 w-3.5 text-muted-foreground" />
+                        )}
+                        <h3 className="truncate font-semibold text-foreground">
+                          {title}
+                        </h3>
                       </div>
-                      <div style={{display: "flex", alignItems: "center", gap: "0.75rem"}}>
-                        {getStatusBadge(request.status)}
-                      </div>
-                    </div>
-                  </a>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="card-elegant py-12" style={{textAlign: "center"}}>
-              <Calendar className="h-12 w-12 text-slate-300" style={{marginLeft: "auto", marginRight: "auto", marginBottom: "1rem"}} />
-              <p style={{color: "#475569"}}>아직 협조요청이 없습니다.</p>
-              <Link href="/request/new">
-                <a className="inline-block" style={{marginTop: "1rem"}}>
-                  <Button>첫 요청 생성하기</Button>
-                </a>
-              </Link>
-            </div>
-          )}
-        </div>
+                      <p className="mt-0.5 text-sm text-muted-foreground">
+                        {request.requestDate} · {request.startTime}~
+                        {request.endTime}
+                      </p>
+                    </button>
+                    <span className={meta?.badgeClass}>{meta?.label}</span>
+                    {request.status === "pending" && (
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="요청 취소"
+                        onClick={() => setCancelId(request.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-muted-foreground" />
+                      </Button>
+                    )}
+                    <ChevronRight
+                      className="hidden h-4 w-4 cursor-pointer text-muted-foreground sm:block"
+                      onClick={() => setLocation(`/request/${request.id}`)}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="card-elegant flex flex-col items-center py-16 text-center">
+            <CalendarDays className="mb-3 h-10 w-10 text-muted-foreground/40" />
+            <p className="mb-4 text-muted-foreground">
+              아직 협조요청이 없습니다.
+            </p>
+            <Link href="/request/new">
+              <Button>
+                <Plus className="h-4 w-4" /> 첫 요청 만들기
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
+
+      {/* 취소 확인 */}
+      <AlertDialog
+        open={cancelId !== null}
+        onOpenChange={open => !open && setCancelId(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>요청을 취소할까요?</AlertDialogTitle>
+            <AlertDialogDescription>
+              취소한 요청은 복구할 수 없습니다. 대기 중인 요청만 취소할 수
+              있습니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>닫기</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                cancelId && cancelMutation.mutate({ requestId: cancelId })
+              }
+              disabled={cancelMutation.isPending}
+            >
+              {cancelMutation.isPending ? "취소 중..." : "요청 취소"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

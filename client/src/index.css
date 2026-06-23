@@ -1,61 +1,129 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
 
-/* 우아한 스타일을 위한 색상 정의 */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 따뜻하고 우아한 교회 톤 팔레트
+ * - primary: 깊은 와인/버건디 (브랜드)
+ * - gold: 절제된 금색 (포인트)
+ * - 따뜻한 아이보리 배경 + 에스프레소 텍스트
+ */
 :root {
   color-scheme: light;
-  --background: 0 0% 98%;
-  --foreground: 240 10% 20%;
-  --card: 0 0% 100%;
-  --card-foreground: 240 10% 20%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 20%;
-  --muted: 240 5% 65%;
-  --muted-foreground: 240 5% 40%;
-  --accent: 210 100% 50%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 84% 60%;
+  --background: 40 30% 98%;
+  --foreground: 24 18% 20%;
+  --card: 40 40% 99%;
+  --card-foreground: 24 18% 20%;
+  --popover: 40 40% 99%;
+  --popover-foreground: 24 18% 20%;
+  --primary: 349 38% 38%;
+  --primary-foreground: 40 33% 97%;
+  --secondary: 36 30% 94%;
+  --secondary-foreground: 24 25% 25%;
+  --muted: 36 25% 93%;
+  --muted-foreground: 28 10% 45%;
+  --accent: 36 40% 91%;
+  --accent-foreground: 24 25% 25%;
+  --gold: 38 56% 48%;
+  --gold-foreground: 40 33% 97%;
+  --destructive: 0 65% 47%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 5% 90%;
-  --input: 240 5% 95%;
-  --ring: 210 100% 50%;
-  --radius: 0.5rem;
+  --success: 145 45% 38%;
+  --warning: 35 80% 45%;
+  --info: 215 50% 45%;
+  --border: 34 22% 87%;
+  --input: 34 22% 87%;
+  --ring: 349 38% 45%;
+  --radius: 0.625rem;
 }
 
 .dark {
   color-scheme: dark;
-  --background: 240 10% 8%;
-  --foreground: 0 0% 95%;
-  --card: 240 10% 15%;
-  --card-foreground: 0 0% 95%;
-  --popover: 240 10% 15%;
-  --popover-foreground: 0 0% 95%;
-  --muted: 240 5% 40%;
-  --muted-foreground: 240 5% 65%;
-  --accent: 210 100% 60%;
-  --accent-foreground: 240 10% 8%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 240 10% 8%;
-  --border: 240 5% 25%;
-  --input: 240 5% 20%;
-  --ring: 210 100% 60%;
+  --background: 24 16% 10%;
+  --foreground: 40 20% 92%;
+  --card: 24 14% 13%;
+  --card-foreground: 40 20% 92%;
+  --popover: 24 14% 13%;
+  --popover-foreground: 40 20% 92%;
+  --primary: 349 52% 60%;
+  --primary-foreground: 24 16% 10%;
+  --secondary: 24 12% 20%;
+  --secondary-foreground: 40 20% 92%;
+  --muted: 24 12% 20%;
+  --muted-foreground: 36 12% 65%;
+  --accent: 24 12% 22%;
+  --accent-foreground: 40 20% 92%;
+  --gold: 38 60% 58%;
+  --gold-foreground: 24 16% 10%;
+  --destructive: 0 65% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 145 45% 50%;
+  --warning: 35 80% 58%;
+  --info: 215 55% 62%;
+  --border: 24 10% 26%;
+  --input: 24 10% 26%;
+  --ring: 349 52% 62%;
 }
 
-* {
-  border-color: hsl(var(--border));
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-gold: hsl(var(--gold));
+  --color-gold-foreground: hsl(var(--gold-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-success: hsl(var(--success));
+  --color-warning: hsl(var(--warning));
+  --color-info: hsl(var(--info));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Noto Sans KR", sans-serif;
+  --font-serif: "Gowun Batang", serif;
 }
 
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: "Noto Sans KR", sans-serif;
-  margin: 0;
-  padding: 0;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.15);
+  }
 }
 
 .container {
   margin-left: auto;
   margin-right: auto;
-  max-width: 80rem;
+  max-width: 72rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -74,95 +142,34 @@ body {
   }
 }
 
-.flex {
-  display: flex;
-  min-height: 0;
-  min-width: 0;
-}
-
-/* 버튼 스타일 */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.btn-primary:active {
-  transform: scale(0.95);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--card));
-  color: hsl(var(--foreground));
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-secondary:hover {
-  background-color: hsl(var(--muted));
-}
-
-.btn-secondary:active {
-  transform: scale(0.95);
-}
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  color: hsl(var(--foreground));
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-ghost:hover {
-  background-color: hsl(var(--muted));
-}
-
-.btn-ghost:active {
-  transform: scale(0.95);
-}
-
-/* 카드 스타일 */
+/* 우아한 카드 */
 .card-elegant {
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
   border: 1px solid hsl(var(--border));
   background-color: hsl(var(--card));
   padding: 1.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  box-shadow:
+    0 1px 2px rgba(60, 40, 30, 0.04),
+    0 1px 3px rgba(60, 40, 30, 0.06);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .card-elegant:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 12px rgba(60, 40, 30, 0.08),
+    0 2px 4px rgba(60, 40, 30, 0.06);
 }
 
-/* 입력 필드 스타일 */
+/* 입력 필드 */
 .input-elegant {
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
   border: 1px solid hsl(var(--border));
-  background-color: hsl(var(--input));
+  background-color: hsl(var(--card));
   color: hsl(var(--foreground));
-  padding: 0.75rem 1rem;
+  padding: 0.625rem 0.875rem;
   transition: all 0.2s ease;
 }
 
@@ -170,61 +177,52 @@ body {
   color: hsl(var(--muted-foreground));
 }
 
-.input-elegant:focus {
-  border-color: hsl(var(--accent));
+.input-elegant:focus,
+.input-elegant:focus-within {
+  border-color: hsl(var(--primary));
   outline: none;
-  box-shadow: 0 0 0 2px hsla(var(--accent), 0.2);
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
 }
 
 /* 상태 배지 */
-.badge-pending {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  background-color: #fef3c7;
-  color: #92400e;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.badge-approved {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  background-color: #dcfce7;
-  color: #166534;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.badge-partial {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  background-color: #dbeafe;
-  color: #1e40af;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
+.badge-pending,
+.badge-approved,
+.badge-partial,
 .badge-rejected {
   display: inline-flex;
   align-items: center;
+  gap: 0.25rem;
   border-radius: 9999px;
-  background-color: #fee2e2;
-  color: #991b1b;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.badge-pending {
+  background-color: hsl(35 90% 94%);
+  color: hsl(30 80% 32%);
+}
+.badge-approved {
+  background-color: hsl(145 55% 92%);
+  color: hsl(145 60% 26%);
+}
+.badge-partial {
+  background-color: hsl(215 70% 93%);
+  color: hsl(215 65% 35%);
+}
+.badge-rejected {
+  background-color: hsl(0 75% 95%);
+  color: hsl(0 65% 40%);
 }
 
 /* 섹션 구분선 */
 .section-divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, hsl(var(--border)), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    hsl(var(--border)),
+    transparent
+  );
 }
 
 /* 글로벌 애니메이션 */
@@ -232,7 +230,7 @@ body {
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(4px);
+      transform: translateY(6px);
     }
     to {
       opacity: 1;
@@ -240,22 +238,7 @@ body {
     }
   }
 
-  @keyframes slideInFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
-
-  .animate-slide-in {
-    animation: slideInFromLeft 0.3s ease-out;
+    animation: fadeIn 0.35s ease-out both;
   }
 }

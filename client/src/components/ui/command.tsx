@@ -67,9 +67,9 @@ function CommandInput({
   return (
     <div
       data-slot="command-input-wrapper"
-      className="h-9 border-b" style={{display: "flex", alignItems: "center", gap: "0.5rem", paddingLeft: "0.75rem", paddingRight: "0.75rem"}}
+      className="flex h-9 items-center gap-2 border-b px-3"
     >
-      <SearchIcon className="size-4 shrink-0" style={{opacity: 0.5}} />
+      <SearchIcon className="size-4 shrink-0 opacity-50" />
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
@@ -104,7 +104,7 @@ function CommandEmpty({
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      style={{paddingTop: "1.5rem", paddingBottom: "1.5rem", textAlign: "center", fontSize: "0.875rem"}}
+      className="py-6 text-center text-sm"
       {...props}
     />
   );

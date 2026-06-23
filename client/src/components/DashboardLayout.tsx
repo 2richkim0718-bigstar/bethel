@@ -58,13 +58,13 @@ export default function DashboardLayout({
 
   if (!user) {
     return (
-      <div style={{display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh"}}>
-        <div className="max-w-md" style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "2rem", padding: "2rem", width: "100%"}}>
-          <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem"}}>
-            <h1 className="tracking-tight" style={{fontSize: "1.5rem", fontWeight: 600, textAlign: "center"}}>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
+          <div className="flex flex-col items-center gap-6">
+            <h1 className="text-2xl font-semibold tracking-tight text-center">
               Sign in to continue
             </h1>
-            <p className="text-muted-foreground max-w-sm" style={{fontSize: "0.875rem", textAlign: "center"}}>
+            <p className="text-sm text-muted-foreground text-center max-w-sm">
               Access to this dashboard requires authentication. Continue to launch the login flow.
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function DashboardLayout({
               window.location.href = getLoginUrl();
             }}
             size="lg"
-            className="hover:shadow-xl" style={{width: "100%", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", transition: "all 0.2s ease"}}
+            className="w-full shadow-lg hover:shadow-xl transition-all"
           >
             Sign in
           </Button>
@@ -159,18 +159,18 @@ function DashboardLayoutContent({
           className="border-r-0"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="h-16" style={{justifyContent: "center"}}>
-            <div style={{display: "flex", alignItems: "center", gap: "0.75rem", paddingLeft: "0.5rem", paddingRight: "0.5rem", transition: "all 0.2s ease", width: "100%"}}>
+          <SidebarHeader className="h-16 justify-center">
+            <div className="flex items-center gap-3 px-2 transition-all w-full">
               <button
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0" style={{display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "0.5rem"}}
+                className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
                 aria-label="Toggle navigation"
               >
                 <PanelLeft className="h-4 w-4 text-muted-foreground" />
               </button>
               {!isCollapsed ? (
-                <div style={{display: "flex", alignItems: "center", gap: "0.5rem", minWidth: 0}}>
-                  <span className="tracking-tight truncate" style={{fontWeight: 600}}>
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="font-semibold tracking-tight truncate">
                     Navigation
                   </span>
                 </div>
@@ -179,7 +179,7 @@ function DashboardLayoutContent({
           </SidebarHeader>
 
           <SidebarContent className="gap-0">
-            <SidebarMenu style={{paddingLeft: "0.5rem", paddingRight: "0.5rem", paddingTop: "0.25rem", paddingBottom: "0.25rem"}}>
+            <SidebarMenu className="px-2 py-1">
               {menuItems.map(item => {
                 const isActive = location === item.path;
                 return (
@@ -201,17 +201,17 @@ function DashboardLayoutContent({
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter style={{padding: "0.75rem"}}>
+          <SidebarFooter className="p-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="px-1 hover:bg-accent/50 transition-colors group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring" style={{display: "flex", alignItems: "center", gap: "0.75rem", borderRadius: "0.5rem", paddingTop: "0.25rem", paddingBottom: "0.25rem", width: "100%", textAlign: "left"}}>
+                <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   <Avatar className="h-9 w-9 border shrink-0">
-                    <AvatarFallback className="text-xs" style={{fontWeight: 500}}>
+                    <AvatarFallback className="text-xs font-medium">
                       {user?.name?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 group-data-[collapsible=icon]:hidden" style={{minWidth: 0}}>
-                    <p className="truncate leading-none" style={{fontSize: "0.875rem", fontWeight: 500}}>
+                  <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+                    <p className="text-sm font-medium truncate leading-none">
                       {user?.name || "-"}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-1.5">
@@ -223,7 +223,7 @@ function DashboardLayoutContent({
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem
                   onClick={logout}
-                  className="text-destructive focus:text-destructive" style={{cursor: "pointer"}}
+                  className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Sign out</span>
@@ -244,11 +244,11 @@ function DashboardLayoutContent({
 
       <SidebarInset>
         {isMobile && (
-          <div className="border-b h-14 bg-background/95 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40" style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: "0.5rem", paddingRight: "0.5rem"}}>
-            <div style={{display: "flex", alignItems: "center", gap: "0.5rem"}}>
-              <SidebarTrigger className="h-9 w-9 bg-background" style={{borderRadius: "0.5rem"}} />
-              <div style={{display: "flex", alignItems: "center", gap: "0.75rem"}}>
-                <div style={{display: "flex", flexDirection: "column", gap: "0.25rem"}}>
+          <div className="flex border-b h-14 items-center justify-between bg-background/95 px-2 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-1">
                   <span className="tracking-tight text-foreground">
                     {activeMenuItem?.label ?? "Menu"}
                   </span>
@@ -257,7 +257,7 @@ function DashboardLayoutContent({
             </div>
           </div>
         )}
-        <main className="flex-1" style={{padding: "1rem"}}>{children}</main>
+        <main className="flex-1 p-4">{children}</main>
       </SidebarInset>
     </>
   );

@@ -19,7 +19,7 @@ function Checkbox({
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="text-current transition-none" style={{display: "flex", alignItems: "center", justifyContent: "center"}}
+        className="flex items-center justify-center text-current transition-none"
       >
         <CheckIcon className="size-3.5" />
       </CheckboxPrimitive.Indicator>

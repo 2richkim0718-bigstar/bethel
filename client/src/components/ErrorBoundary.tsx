@@ -24,17 +24,17 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="bg-background" style={{display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "2rem"}}>
-          <div className="max-w-2xl" style={{display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "2rem"}}>
+        <div className="flex items-center justify-center min-h-screen p-8 bg-background">
+          <div className="flex flex-col items-center w-full max-w-2xl p-8">
             <AlertTriangle
               size={48}
-              className="text-destructive flex-shrink-0" style={{marginBottom: "1.5rem"}}
+              className="text-destructive mb-6 flex-shrink-0"
             />
 
-            <h2 style={{fontSize: "1.25rem", marginBottom: "1rem"}}>An unexpected error occurred.</h2>
+            <h2 className="text-xl mb-4">An unexpected error occurred.</h2>
 
-            <div className="bg-muted overflow-auto" style={{padding: "1rem", width: "100%", borderRadius: "0.25rem", marginBottom: "1.5rem"}}>
-              <pre className="text-muted-foreground whitespace-break-spaces" style={{fontSize: "0.875rem"}}>
+            <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
+              <pre className="text-sm text-muted-foreground whitespace-break-spaces">
                 {this.state.error?.stack}
               </pre>
             </div>
