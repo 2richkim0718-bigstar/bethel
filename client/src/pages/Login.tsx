@@ -1,9 +1,36 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
-import { Link } from "wouter";
-import { Church, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { trpc } from "@/lib/trpc";
+import { Link, useLocation } from "wouter";
+import { Church, ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Login() {
+  const [, setLocation] = useLocation();
+  const utils = trpc.useUtils();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = trpc.auth.login.useMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!username.trim() || !password) {
+      toast.error("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+    try {
+      const user = await login.mutateAsync({ username, password });
+      await utils.auth.me.invalidate();
+      toast.success("로그인되었습니다.");
+      setLocation(user.role === "admin" ? "/admin/requests" : "/dashboard");
+    } catch (err: any) {
+      toast.error(err.message || "로그인에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-secondary/40 to-background px-4">
       <div className="w-full max-w-md animate-fade-in">
@@ -26,32 +53,54 @@ export default function Login() {
             </p>
           </div>
 
-          <div className="mb-6 text-center">
-            <h2 className="mb-1 text-lg font-semibold text-foreground">
-              로그인 / 시작하기
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Manus 계정으로 안전하게 로그인하세요.
-              <br />
-              처음이시면 로그인 후 역할을 선택하게 됩니다.
-            </p>
-          </div>
-
-          <a href={getLoginUrl()} className="block">
-            <Button className="w-full" size="lg">
-              Manus로 계속하기
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="username" className="text-sm font-medium">
+                아이디
+              </Label>
+              <Input
+                id="username"
+                autoComplete="username"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="아이디를 입력하세요"
+                className="input-elegant mt-1.5 w-full"
+              />
+            </div>
+            <div>
+              <Label htmlFor="password" className="text-sm font-medium">
+                비밀번호
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="비밀번호를 입력하세요"
+                className="input-elegant mt-1.5 w-full"
+              />
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={login.isPending}
+            >
+              {login.isPending ? "로그인 중..." : "로그인"}
             </Button>
-          </a>
+          </form>
 
           <div className="section-divider my-6" />
 
-          <div className="flex items-start gap-2 rounded-lg bg-secondary/50 p-3 text-xs text-muted-foreground">
-            <ShieldCheck className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-            <p>
-              로그인하면 서비스 약관 및 개인정보 처리방침에 동의하는 것으로
-              간주됩니다.
-            </p>
-          </div>
+          <p className="text-center text-sm text-muted-foreground">
+            아직 계정이 없으신가요?{" "}
+            <Link href="/signup">
+              <span className="cursor-pointer font-medium text-primary hover:underline">
+                회원가입
+              </span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>

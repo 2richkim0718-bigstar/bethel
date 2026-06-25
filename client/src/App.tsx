@@ -7,7 +7,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import RequestForm from "./pages/RequestForm";
 import RequestDetail from "./pages/RequestDetail";
@@ -38,9 +37,6 @@ function ProtectedRoute({
   // 미로그인 → 로그인 페이지
   if (!user) return <Redirect to="/login" />;
 
-  // 프로필 미완성 → 온보딩
-  if (!user.profileCompleted) return <Redirect to="/onboarding" />;
-
   // 권한 불일치
   if (requiredRole && user.role !== requiredRole) {
     return (
@@ -51,26 +47,12 @@ function ProtectedRoute({
   return <Component />;
 }
 
-/** 로그인했지만 온보딩 전이면 온보딩으로, 완료했으면 역할별 홈으로 보낸다. */
-function OnboardingRoute() {
-  const { user, loading } = useAuth();
-  if (loading) return <FullScreenLoader />;
-  if (!user) return <Redirect to="/login" />;
-  if (user.profileCompleted) {
-    return (
-      <Redirect to={user.role === "admin" ? "/admin/requests" : "/dashboard"} />
-    );
-  }
-  return <Onboarding />;
-}
-
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/onboarding" component={OnboardingRoute} />
       <Route
         path="/dashboard"
         component={() => <ProtectedRoute component={Dashboard} />}

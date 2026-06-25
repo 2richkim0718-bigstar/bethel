@@ -39,10 +39,14 @@ export function getSessionCookieOptions(
   //       ? hostname
   //       : undefined;
 
+  // HTTPS(Manus/배포)에서는 cross-site 임베드를 위해 none+secure,
+  // 사내 HTTP(내부 IP) 환경에서는 same-origin first-party 쿠키로 lax 사용.
+  // (sameSite=none 은 secure=true 가 아니면 브라우저가 쿠키를 버린다.)
+  const secure = isSecureRequest(req);
   return {
     httpOnly: true,
     path: "/",
-    sameSite: "none",
-    secure: isSecureRequest(req),
+    sameSite: secure ? "none" : "lax",
+    secure,
   };
 }

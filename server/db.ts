@@ -112,6 +112,52 @@ export async function getUserByOpenId(openId: string) {
 }
 
 /**
+ * 사내 로그인 아이디로 사용자 조회.
+ */
+export async function getUserByUsername(username: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.username, username))
+    .limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+/**
+ * 사내 로그인 계정 생성. openId는 `local:<username>` 형태로 저장한다.
+ * 가입 시 역할/부서를 함께 받아 프로필을 바로 완료 처리한다.
+ */
+export async function createLocalUser(data: {
+  username: string;
+  passwordHash: string;
+  name: string;
+  role: "pastor" | "member";
+  department: string;
+  age?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const openId = `local:${data.username}`;
+  await db.insert(users).values({
+    openId,
+    username: data.username,
+    passwordHash: data.passwordHash,
+    name: data.name,
+    role: data.role === "pastor" ? "admin" : "user",
+    department: data.department,
+    age: data.age,
+    profileCompleted: 1,
+    loginMethod: "local",
+    lastSignedIn: new Date(),
+  });
+
+  return getUserByUsername(data.username);
+}
+
+/**
  * 온보딩(프로필 입력) 완료 처리.
  * 역할에 따라 권한을 부여한다: 목사님 → admin, 성도 → user.
  */

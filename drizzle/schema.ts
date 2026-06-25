@@ -1,4 +1,11 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import {
+  int,
+  mysqlEnum,
+  mysqlTable,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -11,8 +18,12 @@ export const users = mysqlTable("users", {
    * Use this for relations between tables.
    */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
+  /** 내부 식별자. 사내 로그인은 `local:<username>` 형태로 저장된다. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
+  /** 사내 로그인 아이디. 사용자가 직접 정한다. Unique. */
+  username: varchar("username", { length: 64 }).unique(),
+  /** scrypt 비밀번호 해시 (salt:hash). 사내 로그인 전용. */
+  passwordHash: varchar("passwordHash", { length: 255 }),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
@@ -78,7 +89,9 @@ export const requests = mysqlTable("requests", {
   endTime: varchar("endTime", { length: 5 }).notNull(), // HH:MM
   purpose: text("purpose"), // 사용 목적
   attendeeCount: int("attendeeCount"), // 참석 인원
-  status: mysqlEnum("status", ["pending", "approved", "partial", "rejected"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "approved", "partial", "rejected"])
+    .default("pending")
+    .notNull(),
   approvedStartTime: varchar("approvedStartTime", { length: 5 }), // 부분승인 시 가능한 시작 시간
   approvedEndTime: varchar("approvedEndTime", { length: 5 }), // 부분승인 시 가능한 종료 시간
   memo: text("memo"), // 승인/거절 사유 또는 메모
@@ -97,7 +110,12 @@ export const notifications = mysqlTable("notifications", {
   userId: int("userId").notNull(), // FK: User
   requestId: int("requestId").notNull(), // FK: Request
   message: text("message").notNull(), // 알림 메시지
-  type: mysqlEnum("type", ["request_created", "approved", "partial", "rejected"]).notNull(),
+  type: mysqlEnum("type", [
+    "request_created",
+    "approved",
+    "partial",
+    "rejected",
+  ]).notNull(),
   isRead: int("isRead").default(0), // 0: 미읽음, 1: 읽음
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });

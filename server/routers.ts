@@ -1,8 +1,14 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
+import { sdk } from "./_core/sdk";
+import { ENV } from "./_core/env";
+import { hashPassword, verifyPassword } from "./_core/password";
+import { getUserByUsername, createLocalUser } from "./db";
 import {
   getRooms,
   getItems,
@@ -23,6 +29,23 @@ import {
 } from "./db";
 import { notifyOwner } from "./_core/notification";
 
+/** 로그인/가입 성공 시 세션 쿠키(JWT)를 발급한다. 기존 세션 검증 파이프라인을 그대로 사용한다. */
+async function establishSession(
+  ctx: {
+    req: CreateExpressContextOptions["req"];
+    res: CreateExpressContextOptions["res"];
+  },
+  openId: string,
+  name: string
+) {
+  const token = await sdk.signSession(
+    { openId, appId: ENV.appId || "local", name },
+    { expiresInMs: ONE_YEAR_MS }
+  );
+  const opts = getSessionCookieOptions(ctx.req);
+  ctx.res.cookie(COOKIE_NAME, token, { ...opts, maxAge: ONE_YEAR_MS });
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
@@ -34,6 +57,82 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    /**
+     * 사내 회원가입: 아이디/비밀번호 + 이름/역할/부서. 가입 즉시 로그인 처리된다.
+     */
+    register: publicProcedure
+      .input(
+        z.object({
+          username: z
+            .string()
+            .trim()
+            .min(2, "아이디는 2자 이상이어야 합니다.")
+            .max(32)
+            .regex(/^[a-zA-Z0-9_.-]+$/, "영문/숫자/._-만 사용할 수 있습니다."),
+          password: z
+            .string()
+            .min(4, "비밀번호는 4자 이상이어야 합니다.")
+            .max(128),
+          name: z.string().trim().min(1).max(50),
+          role: z.enum(["pastor", "member"]),
+          department: z.string().min(1),
+          age: z.number().int().positive().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const username = input.username.toLowerCase();
+        const existing = await getUserByUsername(username);
+        if (existing) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "이미 사용 중인 아이디입니다.",
+          });
+        }
+        const user = await createLocalUser({
+          username,
+          passwordHash: hashPassword(input.password),
+          name: input.name,
+          role: input.role,
+          department: input.department,
+          age: input.age,
+        });
+        if (!user) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "가입에 실패했습니다.",
+          });
+        }
+        await establishSession(ctx, user.openId, user.name || username);
+        return user;
+      }),
+
+    /**
+     * 사내 로그인: 아이디 + 비밀번호.
+     */
+    login: publicProcedure
+      .input(
+        z.object({
+          username: z.string().trim().min(1),
+          password: z.string().min(1),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const username = input.username.toLowerCase();
+        const user = await getUserByUsername(username);
+        if (
+          !user ||
+          !user.passwordHash ||
+          !verifyPassword(input.password, user.passwordHash)
+        ) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "아이디 또는 비밀번호가 올바르지 않습니다.",
+          });
+        }
+        await establishSession(ctx, user.openId, user.name || username);
+        return user;
+      }),
     /**
      * 온보딩: 역할/나이/부서 입력 후 프로필 완료 처리.
      * 목사님 선택 시 admin 권한이 부여된다.

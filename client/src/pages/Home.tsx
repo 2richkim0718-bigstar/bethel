@@ -1,6 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -70,9 +69,16 @@ export default function Home() {
                 <Button size="sm">대시보드로 이동</Button>
               </Link>
             ) : (
-              <a href={getLoginUrl()}>
-                <Button size="sm">로그인 / 시작하기</Button>
-              </a>
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <Button size="sm" variant="outline">
+                    로그인
+                  </Button>
+                </Link>
+                <Link href="/signup">
+                  <Button size="sm">회원가입</Button>
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -104,14 +110,14 @@ export default function Home() {
               </Link>
             ) : (
               <>
-                <a href={getLoginUrl()}>
+                <Link href="/signup">
                   <Button size="lg" className="gap-2">
                     시작하기 <ArrowRight className="h-4 w-4" />
                   </Button>
-                </a>
-                <Link href="/signup">
+                </Link>
+                <Link href="/login">
                   <Button size="lg" variant="outline">
-                    서비스 둘러보기
+                    로그인
                   </Button>
                 </Link>
               </>
@@ -188,11 +194,11 @@ export default function Home() {
           있습니다.
         </p>
         {!isAuthenticated && (
-          <a href={getLoginUrl()} className="mt-6 inline-block">
-            <Button size="lg" className="gap-2">
-              <CheckCircle2 className="h-4 w-4" /> 무료로 시작하기
+          <Link href="/signup">
+            <Button size="lg" className="mt-6 gap-2">
+              <CheckCircle2 className="h-4 w-4" /> 회원가입하고 시작하기
             </Button>
-          </a>
+          </Link>
         )}
       </section>
 
